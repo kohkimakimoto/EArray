@@ -1,6 +1,14 @@
 <?php
+/*
+ * This program was created by Kohki Makimoto <kohki.makimoto@gmail.com>
+ */
 namespace Kohkimakimoto\EArray;
 
+/**
+ * EArray is a PHP Class to provide convenient ways to access a PHP Array.
+ *
+ * @author Kohki Makimoto <kohki.makimoto@gmail.com>
+ */
 class EArray implements \ArrayAccess, \Iterator, \Countable
 {
     protected $array;

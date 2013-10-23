@@ -72,4 +72,11 @@ class EArrayTest extends \PHPUnit_Framework_TestCase
             
         }
     }
+
+    public function testSet()
+    {
+        $earray = new EArray(array("foo" => "bar"));
+        $earray->set("foo", "bar2");
+        $this->assertEquals("bar2", $earray["foo"]);
+    }
 }

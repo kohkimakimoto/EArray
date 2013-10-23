@@ -86,25 +86,32 @@ class EArrayTest extends \PHPUnit_Framework_TestCase
         ));
 
         $i = 0;
+        $status = 0;
         foreach ($earray as $k => $v) {
             if ($i == 0) {
-                $this->assertEquals("foo", $k); 
+                $this->assertEquals("foo", $k);
+                $status++;
             }
             if ($i == 1) {
                 $this->assertEquals("foo1", $k); 
+                $status++;
             }
             if ($i == 2) {
                 $this->assertEquals("foo2", $k); 
+                $status++;
             }
             if ($i == 3) {
                 $this->assertEquals("foo3", $k); 
+                $status++;
             }
             if ($i == 4) {
                 $this->assertEquals("foo4", $k); 
+                $status++;
             }
             $i++;
         }
 
+        $this->assertEquals(5, $status);
         $this->assertEquals(5, count($earray));
 
     }

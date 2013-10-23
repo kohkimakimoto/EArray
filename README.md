@@ -73,24 +73,6 @@ $earray->get("foo.foo2-1", null, "."); # "foo5"
 
 ```
 
-Using like a normal array.
-
-```php
-<?php
-$earray = new Kohkimakimoto\EArray\EArray(array(
-    "foo" => "bar",
-    "foo1" => "bar1",
-    "foo2" => "bar2",
-    "foo3" => "bar3",
-    "foo4" => "bar4",
-));
-
-foreach ($earray as $k => $v) {
-   # ...
-}
-```
-
-
 
 
 

@@ -20,7 +20,7 @@ Make `composer.json` file like the following.
 ```json
 {
       "require": {
-          "kohkimakimoto/earray": "0.1.*"
+          "kohkimakimoto/earray": "dev-master"
       }
 }
 ```

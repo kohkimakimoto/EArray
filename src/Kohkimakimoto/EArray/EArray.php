@@ -1,7 +1,7 @@
 <?php
 namespace Kohkimakimoto\EArray;
 
-class EArray implements \ArrayAccess
+class EArray implements \ArrayAccess, \Iterator, \Countable
 {
     protected $array;
 
@@ -61,7 +61,6 @@ class EArray implements \ArrayAccess
         return $this->array;
     }
 
-
     public function offsetSet($offset, $value) {
         $this->array[$offset] = $value;
     }
@@ -76,5 +75,29 @@ class EArray implements \ArrayAccess
 
     public function offsetGet($offset) {
         return isset($this->array[$offset]) ? $this->array[$offset] : null;
+    }
+
+    public function current() {
+        return current($this->array);
+    }
+    
+    public function key() {
+        return key($this->array);
+    }
+    
+    public function next() {
+        return next($this->array);
+    }
+
+    public function rewind() {
+        reset($this->array);
+    }
+    
+    public function valid() {
+        return ($this->current() !== false);
+    }
+
+     public function count() {
+        return count($this->array);
     }
 }

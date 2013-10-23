@@ -49,7 +49,7 @@ class EArray implements \ArrayAccess
      */
     public function delete($key)
     {
-        unset($this->array[$name]);
+        unset($this->array[$key]);
     }
 
     /**

@@ -77,6 +77,13 @@ class EArrayTest extends \PHPUnit_Framework_TestCase
     {
         $earray = new EArray(array("foo" => "bar"));
         $earray->set("foo", "bar2");
-        $this->assertEquals("bar2", $earray["foo"]);
+        $this->assertEquals("bar2", $earray->get("foo"));
+    }
+
+    public function testDelete()
+    {
+        $earray = new EArray(array("foo" => "bar"));
+        $earray->delete("foo");
+        $this->assertEquals(null, $earray->get("foo"));
     }
 }

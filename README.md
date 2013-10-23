@@ -7,6 +7,7 @@ EArray is a PHP Class to provide convenient ways to access a PHP Array.
 
 * Convenient accessing nested array.
 * Supporting a default value.
+* Supporting normal array operation.
 
 ## Requrement
 
@@ -20,7 +21,7 @@ Make `composer.json` file like the following.
 ```json
 {
       "require": {
-          "kohkimakimoto/earray": "dev-master"
+          "kohkimakimoto/earray": "1.0.*"
       }
 }
 ```

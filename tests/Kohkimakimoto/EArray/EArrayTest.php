@@ -66,7 +66,12 @@ class EArrayTest extends \PHPUnit_Framework_TestCase
         ));
 
         unset($earray["foo4"]);
-        isset($earray["foo4"]);
+        $this->assertEquals(false, isset($earray["foo4"]));
+
+        $earray["foo4"] = "aaaa";
+
+        $this->assertEquals("aaaa", $earray["foo4"]);
+        $this->assertEquals("aaaa", $earray->get("foo4"));
     }
 
     public function testSet()

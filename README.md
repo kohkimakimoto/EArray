@@ -1,5 +1,8 @@
 # EArray
 
+[![Build Status](https://travis-ci.org/kohkimakimoto/EArray.png?branch=master)](https://travis-ci.org/kohkimakimoto/EArray)
+[![Coverage Status](https://coveralls.io/repos/kohkimakimoto/EArray/badge.png?branch=master)](https://coveralls.io/r/kohkimakimoto/EArray?branch=master)
+
 EArray is a PHP Class to provide convenient ways to access a PHP Array.
 
 * Convenient accessing nested array.

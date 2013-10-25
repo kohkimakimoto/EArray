@@ -6,9 +6,9 @@
 
 EArray is a PHP Class to provide convenient ways to access a PHP Array.
 
-* Convenient accessing nested array.
+* Convenient accessing a nested array.
 * Supporting a default value.
-* Supporting normal array operation.
+* Supporting a normal array operation.
 
 It aims to remove code that checks array key existence. Especially for a nested array.
 Do you hate like a following code?

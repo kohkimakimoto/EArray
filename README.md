@@ -21,7 +21,6 @@ if (is_array($arr2)) {
 }
 
 echo $val;
-
 ```
 
 You can write same things using EArray object.
@@ -64,10 +63,15 @@ Basic usage.
 use Kohkimakimoto\EArray\EArray;
 
 $earray = new EArray(array("foo" => "bar"));
-$earray->get("foo"); # "bar"
-$earray->get("foo2"); # null
+$earray->get("foo");             # "bar"
+$earray->get("foo2");            # null
 $earray->get("foo2", "default"); # "default"
 
+$earray->set("foo", "bar2");
+$earray->get("foo");             # "bar2"
+
+$earray->delete("foo");
+$earray->get("foo");             # null
 ```
 
 For nested array.
@@ -91,13 +95,13 @@ $earray = new EArray(
 );
 
 // You can get value from a nested array using a delimiter (default "/")
-$earray->get("foo/foo2-1");   # "foo5".
-$earray->get("foo");   # EArray(array("foo2" => array("foo3","foo4",),"foo2-1" => "foo5"))
-$earray->get("foo")->get("foo2-1");  # "foo5".
-$earray->get("foo")->toArray();   # array("foo2" => array("foo3","foo4",),"foo2-1" => "foo5")
+$earray->get("foo/foo2-1");             # "foo5".
+$earray->get("foo");                    # EArray(array("foo2" => array("foo3","foo4",),"foo2-1" => "foo5"))
+$earray->get("foo")->get("foo2-1");     # "foo5".
+$earray->get("foo")->toArray();         # array("foo2" => array("foo3","foo4",),"foo2-1" => "foo5")
 
 // You can change a delimiter by the third argument.
-$earray->get("foo.foo2-1", null, "."); # "foo5"
+$earray->get("foo.foo2-1", null, ".");  # "foo5"
 
 ```
 

@@ -139,6 +139,10 @@ class EArrayTest extends \PHPUnit_Framework_TestCase
         }
 
         $this->assertEquals(true, false);
+    }
+
+    public function testAAA()
+    {
 
     }
 }

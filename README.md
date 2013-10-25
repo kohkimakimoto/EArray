@@ -68,7 +68,7 @@ $earray = new Kohkimakimoto\EArray\EArray(
 // You can get value from a nested array using a delimiter (default "/")
 $earray->get("foo/foo2-1");   # "foo5".
 $earray->get("foo");   # EArray(array("foo2" => array("foo3","foo4",),"foo2-1" => "foo5"))
-$earray->get("foo")->getArray();   # array("foo2" => array("foo3","foo4",),"foo2-1" => "foo5")
+$earray->get("foo")->toArray();   # array("foo2" => array("foo3","foo4",),"foo2-1" => "foo5")
 
 // You can change a delimiter by the third argument.
 $earray->get("foo.foo2-1", null, "."); # "foo5"

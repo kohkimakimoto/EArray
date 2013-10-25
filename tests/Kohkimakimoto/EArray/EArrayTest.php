@@ -37,17 +37,17 @@ class EArrayTest extends \PHPUnit_Framework_TestCase
                         "foo4",
                         ),
                     "foo2-1" => "foo5",
-                    ), $earray->get("foo")->getArray());
+                    ), $earray->get("foo")->toArray());
 
         $this->assertEquals(array(
                         "foo3",
                         "foo4",
-                        ), $earray->get("foo")->get("foo2")->getArray());
+                        ), $earray->get("foo")->get("foo2")->toArray());
 
         $this->assertEquals(array(
                         "foo3",
                         "foo4",
-                        ), $earray->get("foo/foo2")->getArray());
+                        ), $earray->get("foo/foo2")->toArray());
 
         $this->assertEquals("foo5", $earray->get("foo.foo2-1", null, "."));
     }
@@ -127,5 +127,18 @@ class EArrayTest extends \PHPUnit_Framework_TestCase
         $earray = new EArray(array("foo" => "bar"));
         $earray->delete("foo");
         $this->assertEquals(null, $earray->get("foo"));
+    }
+
+    public function testConstructException()
+    {
+        try {
+            $earray = new EArray("aaaaaaaa");
+        } catch (\RuntimeException $e) {
+            $this->assertEquals(true, true);
+            return;
+        }
+
+        $this->assertEquals(true, false);
+
     }
 }

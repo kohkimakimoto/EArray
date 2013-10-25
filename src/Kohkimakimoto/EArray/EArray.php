@@ -19,6 +19,9 @@ class EArray implements \ArrayAccess, \Iterator, \Countable
      */
     public function __construct($array = array())
     {
+        if (!is_array($array)) {
+            throw new \RuntimeException("You need to pass Array to constructor.");
+        }
         $this->array = $array;
     }
     
@@ -64,7 +67,7 @@ class EArray implements \ArrayAccess, \Iterator, \Countable
     * Get a array.
     * @return array:
     */
-    public function getArray()
+    public function toArray()
     {
         return $this->array;
     }

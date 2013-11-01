@@ -123,3 +123,7 @@ foreach ($earray as $k => $v) {
    echo $v;  # "bar", "bar1", "bar2", ...
 }
 ```
+
+## License
+
+Apache License 2.0

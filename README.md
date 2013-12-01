@@ -42,7 +42,7 @@ Make `composer.json` file like the following.
 ```json
 {
       "require": {
-          "kohkimakimoto/earray": "1.1.*"
+          "kohkimakimoto/earray": "1.2.*"
       }
 }
 ```

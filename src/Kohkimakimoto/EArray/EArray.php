@@ -81,16 +81,12 @@ class EArray implements \ArrayAccess, \Iterator, \Countable
 
     protected function doSort($key = null, $delimiter = '/', $order = 1)
     {
-        $this->key = $key;
-        $this->delimiter = $delimiter;
-        $this->order = $order;
-
-        uasort($this->array, function($one, $another) {
+        uasort($this->array, function($one, $another) use ($key, $delimiter, $order) {
 
             $oneValue = null;
             if (is_array($one)) {
                 $one = new EArray($one);
-                $oneValue = $one->get($this->key, 0, $this->delimiter);
+                $oneValue = $one->get($key, 0, $delimiter);
             } else {
                 $oneValue = $one;
             }
@@ -98,7 +94,7 @@ class EArray implements \ArrayAccess, \Iterator, \Countable
             $anotherValue = null;
             if (is_array($another)) {
                 $another = new EArray($another);
-                $anotherValue = $another->get($this->key, 0, $this->delimiter);
+                $anotherValue = $another->get($key, 0, $delimiter);
             } else {
                 $anotherValue = $another;
             }
@@ -116,16 +112,12 @@ class EArray implements \ArrayAccess, \Iterator, \Countable
                 $cmp = strcmp($oneValue, $anotherValue);
             }
 
-            if ($this->order === self::ORDER_HIGHT_TO_LOW) {
+            if ($order === self::ORDER_HIGHT_TO_LOW) {
                 $cmp = -$cmp;
             }
 
             return $cmp;
         });
-
-        unset($this->key);
-        unset($this->delimiter);
-        unset($this->order);
 
         return $this;
     }

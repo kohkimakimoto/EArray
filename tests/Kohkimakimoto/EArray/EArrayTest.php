@@ -166,7 +166,29 @@ class EArrayTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(array("details" => array("weight" => 3, "position" => 22)), array_shift($sortedArray));
         $this->assertEquals(array("details" => array("weight" => 2, "position" => 33)), array_shift($sortedArray));
         $this->assertEquals(array("details" => array("weight" => 1, "position" => 34)), array_shift($sortedArray));
+    }
 
+    public function testSort2()
+    {
+        $array = array();
+        $array["g"] = 34;
+        $array["f"] = 33;
+        $array["e"] = 22;
+        $array["d"] = 11;
+        $array["c"] = 2;
+        $array["b"] = 2;
+        $array["a"] = 1;
+
+        $earray = new EArray($array);
+        $sortedArray = $earray->sort()->toArray();
+
+        $this->assertEquals(1, array_shift($sortedArray));
+        $this->assertEquals(2, array_shift($sortedArray));
+        $this->assertEquals(2, array_shift($sortedArray));
+        $this->assertEquals(11, array_shift($sortedArray));
+        $this->assertEquals(22, array_shift($sortedArray));
+        $this->assertEquals(33, array_shift($sortedArray));
+        $this->assertEquals(34, array_shift($sortedArray));
     }
 
     public function testSortByString()

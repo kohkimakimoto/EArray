@@ -11,6 +11,9 @@ namespace Kohkimakimoto\EArray;
  */
 class EArray implements \ArrayAccess, \Iterator, \Countable
 {
+    const ORDER_LOW_TO_HIGH = 1;
+    const ORDER_HIGHT_TO_LOW = -1;
+
     protected $array;
 
     /**
@@ -52,6 +55,79 @@ class EArray implements \ArrayAccess, \Iterator, \Countable
     public function set($key, $value)
     {
         $this->array[$key] = $value;
+    }
+
+    /**
+     * Sort a array.
+     * @param  String $key
+     * @param  String $delimiter
+     * @return EArray $earray
+     */
+    public function sort($key = null, $delimiter = '/')
+    {
+        return $this->doSort($key, $delimiter, self::ORDER_LOW_TO_HIGH);
+    }
+
+    /**
+     * Reverse sort a array.
+     * @param  String $key
+     * @param  String $delimiter
+     * @return EArray $earray
+     */
+    public function rsort($key = null, $delimiter = '/')
+    {
+        return $this->doSort($key, $delimiter, self::ORDER_HIGHT_TO_LOW);
+    }
+
+    protected function doSort($key = null, $delimiter = '/', $order = 1)
+    {
+        $this->key = $key;
+        $this->delimiter = $delimiter;
+        $this->order = $order;
+
+        uasort($this->array, function($one, $another) {
+
+            $oneValue = null;
+            if (is_array($one)) {
+                $one = new EArray($one);
+                $oneValue = $one->get($this->key, 0, $this->delimiter);
+            } else {
+                $oneValue = $one;
+            }
+
+            $anotherValue = null;
+            if (is_array($another)) {
+                $another = new EArray($another);
+                $anotherValue = $another->get($this->key, 0, $this->delimiter);
+            } else {
+                $anotherValue = $another;
+            }
+
+            $cmp = 0;
+            if (is_numeric($oneValue) && is_numeric($anotherValue)) {
+                $oneValue = floatval($oneValue);
+                $anotherValue = floatval($anotherValue);
+                if ($oneValue == $anotherValue) {
+                    $cmp = 0;
+                } else {
+                    $cmp = ($oneValue < $anotherValue) ? -1 : 1;
+                }
+            } else {
+                $cmp = strcmp($oneValue, $anotherValue);
+            }
+
+            if ($this->order === self::ORDER_HIGHT_TO_LOW) {
+                $cmp = -$cmp;
+            }
+
+            return $cmp;
+        });
+
+        unset($this->key);
+        unset($this->delimiter);
+        unset($this->order);
+
+        return $this;
     }
 
     /**

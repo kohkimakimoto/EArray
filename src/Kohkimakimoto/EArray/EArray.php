@@ -112,7 +112,7 @@ class EArray implements \ArrayAccess, \Iterator, \Countable
                 $cmp = strcmp($oneValue, $anotherValue);
             }
 
-            if ($order === self::ORDER_HIGHT_TO_LOW) {
+            if ($order === EArray::ORDER_HIGHT_TO_LOW) {
                 $cmp = -$cmp;
             }
 

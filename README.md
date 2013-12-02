@@ -131,6 +131,14 @@ print_r($earray->sort("details/position")->toArray());  // sort by details/posit
 
 // Result
 // array("a" => array(...), "b" => array(...), "c" => array(...), "d" => array(...), ...)
+
+print_r($earray->rsort("details/position")->toArray());  // reverse sort by details/position 
+
+// Result
+// array("f" => array(...), "e" => array(...), "d" => array(...), "c" => array(...), ...)
+
+
+
 ```
 
 ### Using like a normal array

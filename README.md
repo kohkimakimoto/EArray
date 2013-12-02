@@ -106,7 +106,7 @@ $earray->get("foo.foo2-1", null, ".");  # "foo5"
 
 ```
 
-### Sort an array.
+### Sort an array
 
 ```php
 <?php
@@ -133,7 +133,7 @@ print_r($earray->sort("details/position")->toArray());  // sort by details/posit
 // array("a" => array(...), "b" => array(...), "c" => array(...), "d" => array(...), ...)
 ```
 
-### Using like a normal array.
+### Using like a normal array
 
 ```php
 <?php

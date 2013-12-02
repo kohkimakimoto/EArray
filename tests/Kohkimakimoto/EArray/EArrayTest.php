@@ -158,6 +158,24 @@ class EArrayTest extends \PHPUnit_Framework_TestCase
         $array["a"]["details"]["position"] = 1;
 
         $earray = new EArray($array);
+        print_r($earray->sort("details/position")->toArray());
+
+
+        $array = array();
+        $array["f"]["details"]["weight"] = 1;
+        $array["f"]["details"]["position"] = 34;
+        $array["e"]["details"]["weight"] = 2;
+        $array["e"]["details"]["position"] = 33;
+        $array["d"]["details"]["weight"] = 3;
+        $array["d"]["details"]["position"] = 22;
+        $array["c"]["details"]["weight"] = 4;
+        $array["c"]["details"]["position"] = 11;
+        $array["b"]["details"]["weight"] = 5;
+        $array["b"]["details"]["position"] = 2;
+        $array["a"]["details"]["weight"] = 6;
+        $array["a"]["details"]["position"] = 1;
+
+        $earray = new EArray($array);
         $sortedArray = $earray->sort("details/position")->toArray();
 
         $this->assertEquals(array("details" => array("weight" => 6, "position" => 1)), array_shift($sortedArray));

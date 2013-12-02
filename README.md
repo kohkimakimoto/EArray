@@ -9,6 +9,7 @@ EArray is a PHP Class to provide convenient ways to access a PHP Array.
 * Convenient accessing a nested array.
 * Supporting a default value.
 * Supporting a normal array operation.
+* Implement sort functions.
 
 It aims to remove code that checks array key existence. Especially for a nested array.
 Do you hate like a following code?
@@ -56,7 +57,7 @@ $ php composer.phar install
 
 ## Usage
 
-Basic usage.
+### Accessing array values
 
 ```php
 <?php
@@ -74,7 +75,7 @@ $earray->delete("foo");
 $earray->get("foo");             # null
 ```
 
-For nested array.
+### Accessing nested array values
 
 ```php
 <?php
@@ -105,7 +106,10 @@ $earray->get("foo.foo2-1", null, ".");  # "foo5"
 
 ```
 
-Using like a normal array.
+### Sort an array.
+
+
+### Using like a normal array.
 
 ```php
 <?php

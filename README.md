@@ -31,7 +31,7 @@ $val = $earray->get("key/key2", null);
 echo $val;
 ```
 
-## Requrement
+## Requirement
 
 PHP5.3 or later.
 

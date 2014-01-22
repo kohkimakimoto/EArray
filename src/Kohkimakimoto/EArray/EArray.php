@@ -37,7 +37,7 @@ class EArray implements \ArrayAccess, \Iterator, \Countable
         $array = $this->array;
 
         foreach (explode($delimiter, $key) as $k) {
-          $array = isset($array[$k]) ? $array[$k] : $default;
+            $array = isset($array[$k]) ? $array[$k] : $default;
         }
 
         if (is_array($array)) {
@@ -52,9 +52,58 @@ class EArray implements \ArrayAccess, \Iterator, \Countable
     * @param unknown $key
     * @param unknown $value
     */
-    public function set($key, $value)
+    public function set($key, $value, $delimiter = '/')
+    {   
+        if (strpos($key, $delimiter) === false) {
+            $this->array[$key] = $value;
+            return $this;
+        }
+
+        $array = $this->array;
+
+        $keys = explode($delimiter, $key);
+        $lastKeyIndex = count($keys) - 1;
+        $ref = &$array;
+        foreach (explode($delimiter, $key) as $i => $k) {
+            array_shift($keys);
+            if (isset($ref[$k])) {
+                
+                if ($i === $lastKeyIndex) {
+                    // last key
+                    $ref[$k] = $value;
+                } else {
+                    $ref = &$ref[$k];
+                }
+
+            } else {
+                if (is_array($ref)) {
+                    $ref[$k] = $this->convertMultidimentional($keys, $value);
+                } else {
+                    throw new \RuntimeException("Couldn't set a value");
+                }
+                break;
+            }
+        }
+
+
+        $this->array = $array;
+        return $this;
+    }
+
+    /**
+     * Convert one dimensional array into multidimensional array
+     */
+    protected function convertMultidimentional($oneDimArray, $leafValue)
     {
-        $this->array[$key] = $value;
+        $multiDimArray = array();
+        $ref = &$multiDimArray;
+        foreach ($oneDimArray as $key) {
+            $ref[$key] = array();
+            $ref = &$ref[$key];
+        }
+        $ref = $leafValue;
+
+        return $multiDimArray;
     }
 
     /**

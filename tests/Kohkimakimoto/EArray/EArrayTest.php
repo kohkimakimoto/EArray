@@ -272,4 +272,81 @@ class EArrayTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(array("details" => array("weight" => 5, "position" => "AAB")), array_shift($sortedArray));
         $this->assertEquals(array("details" => array("weight" => 6, "position" => "AAA")), array_shift($sortedArray));
     }
+
+    public function testSetUsingDelimiter()
+    {
+        // 1
+        $earray = new EArray();
+        $earray->set("aaa/bbb/ccc", "ValueOfCcc");
+
+        $this->assertEquals(
+            array("aaa" => array("bbb" => array("ccc" => "ValueOfCcc"))), 
+            $earray->toArray());
+
+        // 2
+        $earray = new EArray(array("ddd" => array("ddd" => 1)));
+        $earray->set("aaa/bbb/ccc", "ValueOfCcc");
+
+        $this->assertEquals(
+            array(
+                "ddd" => array("ddd" => 1),
+                "aaa" => array("bbb" => array("ccc" => "ValueOfCcc"))), 
+            $earray->toArray());
+
+
+        // 3
+        $earray = new EArray(array("aaa" => array("ddd" => 1)));
+        $earray->set("aaa/bbb/ccc", "ValueOfCcc");
+
+        $this->assertEquals(
+            array(
+                "aaa" => array(
+                    "ddd" => 1,
+                    "bbb" => array("ccc" => "ValueOfCcc"))), 
+            $earray->toArray());
+
+        // 4
+        $earray = new EArray(array("aaa" => array("bbb" => 1)));
+        try {
+            $earray->set("aaa/bbb/ccc", "ValueOfCcc");
+        } catch (\RuntimeException $e) {
+            $this->assertEquals(true, true);
+        }
+
+        $earray = new EArray(array("aaa" => array("ddd" => "fff")));
+        $earray->set("aaa.bbb.ccc", "ValueOfCcc");
+        $this->assertEquals(
+            array(
+                "aaa" => array("ddd" => "fff"),
+                "aaa.bbb.ccc" => "ValueOfCcc",
+                ), 
+            $earray->toArray());
+
+
+        // 5
+        $earray = new EArray(
+            array(
+                "foo" => array(
+                    "foo2" => array(
+                        "foo3",
+                        "foo4",
+                        ),
+                    "foo2-1" => "foo5",
+                    ),
+                "bar",
+                "hoge",
+                )
+        );
+
+        $earray->get("foo/foo2-1");             # "foo5".
+        $earray->get("foo");                    # EArray(array("foo2" => array("foo3","foo4",),"foo2-1" => "foo5"))
+        $earray->get("foo")->get("foo2-1");     # "foo5".
+        $earray->get("foo")->toArray();         # array("foo2" => array("foo3","foo4",),"foo2-1" => "foo5")
+
+        $earray->get("foo.foo2-1", null, ".");  # "foo5"
+
+        $earray->set("foo/foo2-1", "foo5-modify");
+        $this->assertEquals("foo5-modify", $earray->get("foo/foo2-1"));             # "foo5".
+    }
+
 }

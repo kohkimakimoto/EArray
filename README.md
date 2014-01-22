@@ -4,7 +4,7 @@
 [![Coverage Status](https://coveralls.io/repos/kohkimakimoto/EArray/badge.png?branch=master)](https://coveralls.io/r/kohkimakimoto/EArray?branch=master)
 [![Latest Stable Version](https://poser.pugx.org/kohkimakimoto/earray/v/stable.png)](https://packagist.org/packages/kohkimakimoto/earray)
 
-EArray is a PHP Class to provide convenient ways to access a PHP Array.
+EArray is a small PHP class to provide convenient ways to access a PHP Array.
 
 * Convenient accessing a nested array.
 * Supporting a default value.
@@ -104,6 +104,9 @@ $earray->get("foo")->toArray();         # array("foo2" => array("foo3","foo4",),
 // You can change a delimiter by the third argument.
 $earray->get("foo.foo2-1", null, ".");  # "foo5"
 
+// You can set a nested array using a delimiter
+$earray->set("foo/foo2-1", "foo5-modify");
+$earray->get("foo/foo2-1");             # "foo5".
 ```
 
 ### Sort an array

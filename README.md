@@ -106,7 +106,7 @@ $earray->get("foo.foo2-1", null, ".");  # "foo5"
 
 // You can set a nested array using a delimiter
 $earray->set("foo/foo2-1", "foo5-modify");
-$earray->get("foo/foo2-1");             # "foo5".
+$earray->get("foo/foo2-1");             # "foo5-modify".
 ```
 
 ### Sort an array
@@ -139,8 +139,6 @@ print_r($earray->rsort("details/position")->toArray());  // reverse sort by deta
 
 // Result
 // array("f" => array(...), "e" => array(...), "d" => array(...), "c" => array(...), ...)
-
-
 
 ```
 

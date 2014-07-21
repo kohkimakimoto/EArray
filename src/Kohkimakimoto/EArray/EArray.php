@@ -60,6 +60,43 @@ class EArray implements \ArrayAccess, \Iterator, \Countable
     }
 
     /**
+     * Cheking exists key
+     * @param type $key 
+     * @param type $delimiter 
+     * @return type
+     */
+    public function exists($key, $delimiter = null)
+    {
+        if ($delimiter === null) {
+            $delimiter = $this->delimiter;
+        }
+
+        $array = $this->array;
+
+        foreach (explode($delimiter, $key) as $k) {
+
+            if (isset($array[$k])) {
+                $array = $array[$k];
+            } else {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * alias of exists
+     * @param  [type]  $key       [description]
+     * @param  [type]  $delimiter [description]
+     * @return boolean            [description]
+     */
+    public function has($key, $delimiter = null)
+    {
+        return $this->exists($key, $delimiter);
+    }
+
+    /**
     * Set a value.
     * @param unknown $key
     * @param unknown $value
@@ -201,7 +238,7 @@ class EArray implements \ArrayAccess, \Iterator, \Countable
     }
 
     /**
-     * Delete a value.
+     * Delete a value. (It's not support delimiter yet.)
      * @param unknown $key
      */
     public function delete($key)

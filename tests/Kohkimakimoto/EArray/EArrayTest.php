@@ -386,4 +386,33 @@ class EArrayTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(array("foo", "bar", "hoge"), $earray->getKeys());
 
     }
+
+    public function testExists()
+    {
+        $earray = new EArray(array("foo", "bar"));
+        $this->assertEquals(true, $earray->exists(0));
+        $this->assertEquals(true, $earray->exists(1));
+        $this->assertEquals(false, $earray->exists(3));
+
+        $earray = new EArray(
+            array(
+                "foo" => array(
+                    "foo2" => array(
+                        "foo3",
+                        "foo4",
+                        ),
+                    "foo2-1" => "foo5",
+                    ),
+                "bar" => "bbbb",
+                "hoge" => "eee",
+                )
+        );
+
+        $this->assertEquals(true, $earray->exists("foo/foo2"));
+        $this->assertEquals(false, $earray->exists("foo/foo3"));
+        $this->assertEquals(true, $earray->exists("foo.foo2", "."));
+
+        $this->assertEquals(true, $earray->has("foo.foo2", "."));
+
+    }
 }

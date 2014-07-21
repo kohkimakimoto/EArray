@@ -2,7 +2,7 @@
 namespace Kohkimakimoto\EArray;
 
 /**
- * EArray is a PHP class to provide convenient ways to access a PHP Array.
+ * EArray is a small PHP class to provide convenient ways to access a PHP Array.
  *
  * @author Kohki Makimoto <kohki.makimoto@gmail.com>
  */

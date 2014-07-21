@@ -11,26 +11,41 @@ class EArray implements \ArrayAccess, \Iterator, \Countable
     const ORDER_LOW_TO_HIGH = 1;
     const ORDER_HIGHT_TO_LOW = -1;
 
+    /**
+     * array data
+     * @var [type]
+     */
     protected $array;
+    
+    /**
+     * Default delimiter
+     * @var [type]
+     */
+    protected $delimiter;
 
     /**
      * Constructor
      * @param Array $array
      */
-    public function __construct($array = array())
+    public function __construct($array = array(), $delimiter = "/")
     {
         if (!is_array($array)) {
             throw new \RuntimeException("You need to pass Array to constructor.");
         }
         $this->array = $array;
+        $this->delimiter = $delimiter;
     }
     
     /**
      * Get a value
      * @param unknown $key
      */
-    public function get($key, $default = null, $delimiter = '/')
+    public function get($key, $default = null, $delimiter = null)
     {
+        if ($delimiter === null) {
+            $delimiter = $this->delimiter;
+        }
+
         $array = $this->array;
 
         foreach (explode($delimiter, $key) as $k) {
@@ -49,8 +64,12 @@ class EArray implements \ArrayAccess, \Iterator, \Countable
     * @param unknown $key
     * @param unknown $value
     */
-    public function set($key, $value, $delimiter = '/')
+    public function set($key, $value, $delimiter = null)
     {   
+        if ($delimiter === null) {
+            $delimiter = $this->delimiter;
+        }
+
         if (strpos($key, $delimiter) === false) {
             $this->array[$key] = $value;
             return $this;
@@ -118,7 +137,7 @@ class EArray implements \ArrayAccess, \Iterator, \Countable
      * @param  String $delimiter
      * @return EArray $earray
      */
-    public function sort($key = null, $delimiter = '/')
+    public function sort($key = null, $delimiter = null)
     {
         return $this->doSort($key, $delimiter, self::ORDER_LOW_TO_HIGH);
     }
@@ -129,13 +148,17 @@ class EArray implements \ArrayAccess, \Iterator, \Countable
      * @param  String $delimiter
      * @return EArray $earray
      */
-    public function rsort($key = null, $delimiter = '/')
+    public function rsort($key = null, $delimiter = null)
     {
         return $this->doSort($key, $delimiter, self::ORDER_HIGHT_TO_LOW);
     }
 
-    protected function doSort($key = null, $delimiter = '/', $order = 1)
+    protected function doSort($key = null, $delimiter = null, $order = 1)
     {
+        if ($delimiter === null) {
+            $delimiter = $this->delimiter;
+        }
+
         uasort($this->array, function($one, $another) use ($key, $delimiter, $order) {
 
             $oneValue = null;
@@ -238,7 +261,7 @@ class EArray implements \ArrayAccess, \Iterator, \Countable
     public function rewind() {
         reset($this->array);
     }
-    
+
     public function valid() {
         return ($this->current() !== false);
     }

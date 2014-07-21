@@ -357,4 +357,24 @@ class EArrayTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals("value", $earray->get("foo.bar"));
     }
+
+    public function testGetKeys()
+    {
+        $earray = new EArray(
+            array(
+                "foo" => array(
+                    "foo2" => array(
+                        "foo3",
+                        "foo4",
+                        ),
+                    "foo2-1" => "foo5",
+                    ),
+                "bar" => "bbbb",
+                "hoge" => "eee",
+                )
+        );
+
+        $this->assertEquals(array("foo", "bar", "hoge"), $earray->getKeys());
+
+    }
 }

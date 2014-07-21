@@ -55,7 +55,6 @@ class EArray implements \ArrayAccess, \Iterator, \Countable
         if (is_array($array)) {
             $array = new EArray($array);
         }
-
         return $array;
     }
 
@@ -81,12 +80,11 @@ class EArray implements \ArrayAccess, \Iterator, \Countable
                 return false;
             }
         }
-
         return true;
     }
 
     /**
-     * alias of exists
+     * Alias of exists method
      * @param  [type]  $key       [description]
      * @param  [type]  $delimiter [description]
      * @return boolean            [description]
@@ -97,10 +95,12 @@ class EArray implements \ArrayAccess, \Iterator, \Countable
     }
 
     /**
-    * Set a value.
-    * @param unknown $key
-    * @param unknown $value
-    */
+     * Set a value
+     * @param type $key 
+     * @param type $value 
+     * @param type $delimiter 
+     * @return \Kohkimakimoto\EArray\EArray
+     */
     public function set($key, $value, $delimiter = null)
     {   
         if ($delimiter === null) {
@@ -180,7 +180,7 @@ class EArray implements \ArrayAccess, \Iterator, \Countable
      * Reverse sort a array.
      * @param  String $key
      * @param  String $delimiter
-     * @return EArray $earray
+     * @return \Kohkimakimoto\EArray\EArray
      */
     public function rsort($key = null, $delimiter = null)
     {
@@ -235,13 +235,13 @@ class EArray implements \ArrayAccess, \Iterator, \Countable
     }
 
     /**
-     * Delete a value
-     * @param unknown $key
+     * Delete a key
+     * @param String $key 
+     * @param String $delimiter 
+     * @return \Kohkimakimoto\EArray\EArray
      */
     public function delete($key, $delimiter = null)
     {
-        // unset($this->array[$key]);
-
         if ($delimiter === null) {
             $delimiter = $this->delimiter;
         }

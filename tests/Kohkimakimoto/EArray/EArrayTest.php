@@ -82,7 +82,7 @@ class EArrayTest extends \PHPUnit_Framework_TestCase
             "foo1" => "bar1",
             "foo2" => "bar2",
             "foo3" => "bar3",
-            "foo4" => "bar4",
+            "foo4" => array("foo5" => "foo6"),
         ));
 
         $i = 0;
@@ -90,22 +90,27 @@ class EArrayTest extends \PHPUnit_Framework_TestCase
         foreach ($earray as $k => $v) {
             if ($i == 0) {
                 $this->assertEquals("foo", $k);
+                $this->assertEquals("bar", $v);
                 $status++;
             }
             if ($i == 1) {
-                $this->assertEquals("foo1", $k); 
+                $this->assertEquals("foo1", $k);
+                $this->assertEquals("bar1", $v);
                 $status++;
             }
             if ($i == 2) {
-                $this->assertEquals("foo2", $k); 
+                $this->assertEquals("foo2", $k);
+                $this->assertEquals("bar2", $v);
                 $status++;
             }
             if ($i == 3) {
-                $this->assertEquals("foo3", $k); 
+                $this->assertEquals("foo3", $k);
+                $this->assertEquals("bar3", $v);
                 $status++;
             }
             if ($i == 4) {
                 $this->assertEquals("foo4", $k); 
+                $this->assertEquals(array("foo5" => "foo6"), $v->toArray());
                 $status++;
             }
             $i++;
@@ -113,8 +118,9 @@ class EArrayTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(5, $status);
         $this->assertEquals(5, count($earray));
-
     }
+
+
     public function testSet()
     {
         $earray = new EArray(array("foo" => "bar"));

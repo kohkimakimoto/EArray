@@ -12,7 +12,7 @@ EArray is a small PHP class to provide convenient ways to access a PHP Array.
 * Implement sort functions.
 
 It aims to remove code that checks array key existence. Especially for a nested array.
-Do you hate like a following code?
+Do you hate like the following code?
 
 ```php
 $val = null;
@@ -43,7 +43,7 @@ Make `composer.json` file like the following.
 ```json
 {
       "require": {
-          "kohkimakimoto/earray": "1.3.*"
+          "kohkimakimoto/earray": "2.0.*"
       }
 }
 ```
@@ -107,6 +107,17 @@ $earray->get("foo.foo2-1", null, ".");  # "foo5"
 // You can set a nested array using a delimiter
 $earray->set("foo/foo2-1", "foo5-modify");
 $earray->get("foo/foo2-1");             # "foo5-modify".
+```
+
+### You can specify a default delemiter by constructor
+
+```php
+<?php
+use Kohkimakimoto\EArray\EArray;
+
+$earray = new EArray(array("foo" => array("bar" => "value")), ".");
+
+$earray->get("foo.bar"));    // "value"
 ```
 
 ### Sort an array

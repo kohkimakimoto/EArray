@@ -349,4 +349,12 @@ class EArrayTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals("foo5-modify", $earray->get("foo/foo2-1"));             # "foo5".
     }
 
+    public function testUserSpecifiedDelimiter()
+    {
+        $earray = new EArray(array(
+            "foo" => array("bar" => "value")
+            ), ".");
+
+        $this->assertEquals("value", $earray->get("foo.bar"));
+    }
 }

@@ -62,8 +62,11 @@ class EArrayTest extends \PHPUnit_Framework_TestCase
             "foo1" => "bar1",
             "foo2" => "bar2",
             "foo3" => "bar3",
-            "foo4" => "bar4",
+            "foo4" => array("foo5" => "foo6"),
         ));
+
+        $this->assertEquals("bar", $earray["foo"]);
+        $this->assertEquals(array("foo5" => "foo6"), $earray["foo4"]->toArray());
 
         unset($earray["foo4"]);
         $this->assertEquals(false, isset($earray["foo4"]));
@@ -82,7 +85,7 @@ class EArrayTest extends \PHPUnit_Framework_TestCase
             "foo1" => "bar1",
             "foo2" => "bar2",
             "foo3" => "bar3",
-            "foo4" => "bar4",
+            "foo4" => array("foo5" => "foo6"),
         ));
 
         $i = 0;
@@ -90,22 +93,27 @@ class EArrayTest extends \PHPUnit_Framework_TestCase
         foreach ($earray as $k => $v) {
             if ($i == 0) {
                 $this->assertEquals("foo", $k);
+                $this->assertEquals("bar", $v);
                 $status++;
             }
             if ($i == 1) {
-                $this->assertEquals("foo1", $k); 
+                $this->assertEquals("foo1", $k);
+                $this->assertEquals("bar1", $v);
                 $status++;
             }
             if ($i == 2) {
-                $this->assertEquals("foo2", $k); 
+                $this->assertEquals("foo2", $k);
+                $this->assertEquals("bar2", $v);
                 $status++;
             }
             if ($i == 3) {
-                $this->assertEquals("foo3", $k); 
+                $this->assertEquals("foo3", $k);
+                $this->assertEquals("bar3", $v);
                 $status++;
             }
             if ($i == 4) {
                 $this->assertEquals("foo4", $k); 
+                $this->assertEquals(array("foo5" => "foo6"), $v->toArray());
                 $status++;
             }
             $i++;
@@ -113,8 +121,9 @@ class EArrayTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(5, $status);
         $this->assertEquals(5, count($earray));
-
     }
+
+
     public function testSet()
     {
         $earray = new EArray(array("foo" => "bar"));
@@ -127,6 +136,53 @@ class EArrayTest extends \PHPUnit_Framework_TestCase
         $earray = new EArray(array("foo" => "bar"));
         $earray->delete("foo");
         $this->assertEquals(null, $earray->get("foo"));
+        $this->assertEquals(false, $earray->exists("foo"));
+
+        $earray = new EArray(
+            array(
+                "foo" => array(
+                    "foo2" => array(
+                        "foo3",
+                        "foo4",
+                        ),
+                    "foo2-1" => "foo5",
+                    ),
+                "bar",
+                "hoge",
+                )
+        );
+
+        $this->assertEquals(
+            array(
+                "foo" => array(
+                    "foo2-1" => "foo5",
+                    ),
+                "bar",
+                "hoge",
+                ),
+            $earray->delete("foo/foo2")->toArray());
+
+        $earray = new EArray(
+            array(
+                "foo" => array(
+                    "foo2" => array(
+                        "foo3",
+                        "foo4",
+                        ),
+                    "foo2-1" => "foo5",
+                    ),
+                "bar",
+                "hoge",
+                )
+        );
+
+        try {
+            $earray->delete("foo/foo2/aaaaa");
+            $this->assertEquals(false, true);
+        } catch (\RuntimeException $e) {
+            $this->assertEquals(true, true);
+        }
+
     }
 
     public function testConstructException()
@@ -349,4 +405,61 @@ class EArrayTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals("foo5-modify", $earray->get("foo/foo2-1"));             # "foo5".
     }
 
+    public function testUserSpecifiedDelimiter()
+    {
+        $earray = new EArray(array(
+            "foo" => array("bar" => "value")
+            ), ".");
+
+        $this->assertEquals("value", $earray->get("foo.bar"));
+    }
+
+    public function testGetKeys()
+    {
+        $earray = new EArray(
+            array(
+                "foo" => array(
+                    "foo2" => array(
+                        "foo3",
+                        "foo4",
+                        ),
+                    "foo2-1" => "foo5",
+                    ),
+                "bar" => "bbbb",
+                "hoge" => "eee",
+                )
+        );
+
+        $this->assertEquals(array("foo", "bar", "hoge"), $earray->getKeys());
+
+    }
+
+    public function testExists()
+    {
+        $earray = new EArray(array("foo", "bar"));
+        $this->assertEquals(true, $earray->exists(0));
+        $this->assertEquals(true, $earray->exists(1));
+        $this->assertEquals(false, $earray->exists(3));
+
+        $earray = new EArray(
+            array(
+                "foo" => array(
+                    "foo2" => array(
+                        "foo3",
+                        "foo4",
+                        ),
+                    "foo2-1" => "foo5",
+                    ),
+                "bar" => "bbbb",
+                "hoge" => "eee",
+                )
+        );
+
+        $this->assertEquals(true, $earray->exists("foo/foo2"));
+        $this->assertEquals(false, $earray->exists("foo/foo3"));
+        $this->assertEquals(true, $earray->exists("foo.foo2", "."));
+
+        $this->assertEquals(true, $earray->has("foo.foo2", "."));
+
+    }
 }

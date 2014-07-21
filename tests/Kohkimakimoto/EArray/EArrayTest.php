@@ -136,6 +136,53 @@ class EArrayTest extends \PHPUnit_Framework_TestCase
         $earray = new EArray(array("foo" => "bar"));
         $earray->delete("foo");
         $this->assertEquals(null, $earray->get("foo"));
+        $this->assertEquals(false, $earray->exists("foo"));
+
+        $earray = new EArray(
+            array(
+                "foo" => array(
+                    "foo2" => array(
+                        "foo3",
+                        "foo4",
+                        ),
+                    "foo2-1" => "foo5",
+                    ),
+                "bar",
+                "hoge",
+                )
+        );
+
+        $this->assertEquals(
+            array(
+                "foo" => array(
+                    "foo2-1" => "foo5",
+                    ),
+                "bar",
+                "hoge",
+                ),
+            $earray->delete("foo/foo2")->toArray());
+
+        $earray = new EArray(
+            array(
+                "foo" => array(
+                    "foo2" => array(
+                        "foo3",
+                        "foo4",
+                        ),
+                    "foo2-1" => "foo5",
+                    ),
+                "bar",
+                "hoge",
+                )
+        );
+
+        try {
+            $earray->delete("foo/foo2/aaaaa");
+            $this->assertEquals(false, true);
+        } catch (\RuntimeException $e) {
+            $this->assertEquals(true, true);
+        }
+
     }
 
     public function testConstructException()

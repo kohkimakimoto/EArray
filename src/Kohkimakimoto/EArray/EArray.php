@@ -120,14 +120,12 @@ class EArray implements \ArrayAccess, \Iterator, \Countable
         foreach (explode($delimiter, $key) as $i => $k) {
             array_shift($keys);
             if (isset($ref[$k])) {
-                
                 if ($i === $lastKeyIndex) {
                     // last key
                     $ref[$k] = $value;
                 } else {
                     $ref = &$ref[$k];
                 }
-
             } else {
                 if (is_array($ref)) {
                     $ref[$k] = $this->convertMultidimentional($keys, $value);
@@ -137,7 +135,6 @@ class EArray implements \ArrayAccess, \Iterator, \Countable
                 break;
             }
         }
-
 
         $this->array = $array;
         return $this;
@@ -238,12 +235,43 @@ class EArray implements \ArrayAccess, \Iterator, \Countable
     }
 
     /**
-     * Delete a value. (It's not support delimiter yet.)
+     * Delete a value
      * @param unknown $key
      */
-    public function delete($key)
+    public function delete($key, $delimiter = null)
     {
-        unset($this->array[$key]);
+        // unset($this->array[$key]);
+
+        if ($delimiter === null) {
+            $delimiter = $this->delimiter;
+        }
+
+        if (strpos($key, $delimiter) === false) {
+            unset($this->array[$key]);
+            return $this;
+        }
+
+        $array = $this->array;
+
+        $keys = explode($delimiter, $key);
+        $lastKeyIndex = count($keys) - 1;
+        $ref = &$array;
+        foreach (explode($delimiter, $key) as $i => $k) {
+            array_shift($keys);
+            if (isset($ref[$k])) {
+                if ($i === $lastKeyIndex) {
+                    // last key
+                    unset($ref[$k]);
+                } else {
+                    $ref = &$ref[$k];
+                }
+            } else {
+                throw new \RuntimeException("There is not the key '$k'");
+            }
+        }
+
+        $this->array = $array;
+        return $this;
     }
 
     /**

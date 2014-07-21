@@ -1,11 +1,8 @@
 <?php
-/*
- * This program was created by Kohki Makimoto <kohki.makimoto@gmail.com>
- */
 namespace Kohkimakimoto\EArray;
 
 /**
- * EArray is a PHP Class to provide convenient ways to access a PHP Array.
+ * EArray is a PHP class to provide convenient ways to access a PHP Array.
  *
  * @author Kohki Makimoto <kohki.makimoto@gmail.com>
  */
@@ -107,6 +104,15 @@ class EArray implements \ArrayAccess, \Iterator, \Countable
     }
 
     /**
+     * Get keys
+     * @return array keys
+     */
+    public function getKeys()
+    {
+        return array_keys($this->array);
+    }
+
+    /**
      * Sort a array.
      * @param  String $key
      * @param  String $delimiter
@@ -202,11 +208,19 @@ class EArray implements \ArrayAccess, \Iterator, \Countable
     }
 
     public function offsetGet($offset) {
-        return isset($this->array[$offset]) ? $this->array[$offset] : null;
+        $ret = isset($this->array[$offset]) ? $this->array[$offset] : null;
+        if (is_array($ret)) {
+            $ret = new EArray($ret);
+        }
+        return $ret;
     }
 
     public function current() {
-        return current($this->array);
+        $ret = current($this->array);
+        if (is_array($ret)) {
+            $ret = new EArray($ret);
+        }
+        return $ret;
     }
     
     public function key() {
@@ -214,7 +228,11 @@ class EArray implements \ArrayAccess, \Iterator, \Countable
     }
     
     public function next() {
-        return next($this->array);
+        $ret = next($this->array);
+        if (is_array($ret)) {
+            $ret = new EArray($ret);
+        }
+        return $ret;
     }
 
     public function rewind() {

@@ -84,17 +84,6 @@ class EArray implements \ArrayAccess, \Iterator, \Countable
     }
 
     /**
-     * Alias of exists method
-     * @param  [type]  $key       [description]
-     * @param  [type]  $delimiter [description]
-     * @return boolean            [description]
-     */
-    public function has($key, $delimiter = null)
-    {
-        return $this->exists($key, $delimiter);
-    }
-
-    /**
      * Set a value
      * @param type $key 
      * @param type $value 

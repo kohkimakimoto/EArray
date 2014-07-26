@@ -202,10 +202,18 @@ class EArray implements \ArrayAccess, \Iterator, \Countable
         return $new;
     }
 
-    public function csort($closure)
+    public function sort($closure)
     {
         $array = $this->array;
-        uasort($array, $closure);
+        uasort($array, function($one, $another) use ($closure) {
+            if (is_array($one)) {
+                $one = new EArray($one);
+            }
+            if (is_array($another)) {
+                $another = new EArray($another);
+            }
+            return $closure($one, $another);
+        });
         $new = new EArray($array);
         return $new;
     }
@@ -238,7 +246,6 @@ class EArray implements \ArrayAccess, \Iterator, \Countable
 
         return $array;
     }
-
 
     /**
      * Convert one dimensional array into multidimensional array
@@ -275,23 +282,12 @@ class EArray implements \ArrayAccess, \Iterator, \Countable
         return array_keys($this->array);
     }
 
-    /**
-     * Sort a array.
-     * @param  String $key
-     * @param  String $delimiter
-     * @return EArray $earray
-     */
+    /*
     public function sort($key = null, $delimiter = null)
     {
         return $this->doSort($key, $delimiter, self::ORDER_LOW_TO_HIGH);
     }
 
-    /**
-     * Reverse sort a array.
-     * @param  String $key
-     * @param  String $delimiter
-     * @return \Kohkimakimoto\EArray\EArray
-     */
     public function rsort($key = null, $delimiter = null)
     {
         return $this->doSort($key, $delimiter, self::ORDER_HIGHT_TO_LOW);
@@ -343,7 +339,8 @@ class EArray implements \ArrayAccess, \Iterator, \Countable
 
         return $this;
     }
-
+    */
+   
     /**
     * Get a array.
     * @return array:

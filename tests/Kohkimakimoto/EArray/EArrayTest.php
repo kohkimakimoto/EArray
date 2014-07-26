@@ -197,6 +197,7 @@ class EArrayTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(true, false);
     }
 
+    /*
     public function testSort()
     {
 
@@ -328,7 +329,8 @@ class EArrayTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(array("details" => array("weight" => 5, "position" => "AAB")), array_shift($sortedArray));
         $this->assertEquals(array("details" => array("weight" => 6, "position" => "AAA")), array_shift($sortedArray));
     }
-
+    */
+   
     public function testSetUsingDelimiter()
     {
         // 1
@@ -583,6 +585,47 @@ class EArrayTest extends \PHPUnit_Framework_TestCase
         );
 
         $this->assertEquals(3, $earray->size());
+    }
+
+    public function testSort()
+    {
+
+        $array = array();
+        $array["f"]["details"]["weight"] = 1;
+        $array["f"]["details"]["position"] = 34;
+        $array["e"]["details"]["weight"] = 2;
+        $array["e"]["details"]["position"] = 33;
+        $array["d"]["details"]["weight"] = 3;
+        $array["d"]["details"]["position"] = 22;
+        $array["c"]["details"]["weight"] = 4;
+        $array["c"]["details"]["position"] = 11;
+        $array["b"]["details"]["weight"] = 5;
+        $array["b"]["details"]["position"] = 2;
+        $array["a"]["details"]["weight"] = 6;
+        $array["a"]["details"]["position"] = 1;
+
+        $earray = new EArray($array);
+        $sortedArray = $earray->sort(function($one, $another){
+
+            $v1 = $one->get("details/position");
+            $v2 = $another->get("details/position");
+
+            if ($v1 == $v2) {
+                return 0;
+            } else if ($v1 > $v2) {
+                return 1;
+            } else {
+                return -1;
+            }
+
+        })->toArray();
+
+        $this->assertEquals(array("details" => array("weight" => 6, "position" => 1)), array_shift($sortedArray));
+        $this->assertEquals(array("details" => array("weight" => 5, "position" => 2)), array_shift($sortedArray));
+        $this->assertEquals(array("details" => array("weight" => 4, "position" => 11)), array_shift($sortedArray));
+        $this->assertEquals(array("details" => array("weight" => 3, "position" => 22)), array_shift($sortedArray));
+        $this->assertEquals(array("details" => array("weight" => 2, "position" => 33)), array_shift($sortedArray));
+        $this->assertEquals(array("details" => array("weight" => 1, "position" => 34)), array_shift($sortedArray));
     }
 
 }

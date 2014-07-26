@@ -1,6 +1,6 @@
 {
   "name": "kohkimakimoto/earray",
-  "description": "EArray is a small PHP class to provide convenient ways to access a PHP Array.",
+  "description": "EArray is a small PHP class to provide convenient ways to access a PHP array.",
   "keywords": ["Array"],
   "homepage": "https://github.com/kohkimakimoto/EArray",
   "license": "Apache License 2.0",
@@ -15,7 +15,8 @@
   },
   "require-dev": {
     "phpunit/phpunit": "3.*",
-    "satooshi/php-coveralls": "dev-master"
+    "satooshi/php-coveralls": "dev-master",
+    "fabpot/php-cs-fixer": "@stable"
   },
   "autoload": {
     "psr-0": { "Kohkimakimoto\\EArray": "src/"}

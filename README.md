@@ -4,15 +4,15 @@
 [![Coverage Status](https://coveralls.io/repos/kohkimakimoto/EArray/badge.png?branch=master)](https://coveralls.io/r/kohkimakimoto/EArray?branch=master)
 [![Latest Stable Version](https://poser.pugx.org/kohkimakimoto/earray/v/stable.png)](https://packagist.org/packages/kohkimakimoto/earray)
 
-EArray is a small PHP class to provide convenient ways to access a PHP Array.
+EArray is a small PHP class to provide convenient ways to access a PHP array.
 
-* Convenient accessing a nested array.
-* Supporting a default value.
-* Supporting a normal array operation.
-* Implement sort functions.
+* Convenient accessing to a nested array.
+* You can use a default value when you try to get a value of array.
+* You can use this object as a normal array (Implementing `ArrayAccess`, `Iterator` and `Countable` interfase).
+* It has some convenient methods for array: `each`, `filter`, `sort`.
 
 It aims to remove code that checks array key existence. Especially for a nested array.
-Do you hate like the following code?
+Do you hate the code like the below?
 
 ```php
 $val = null;
@@ -27,8 +27,7 @@ echo $val;
 You can write same things using EArray object.
 
 ```php
-$val = $earray->get("key/key2", null);
-echo $val;
+echo $earray->get("key/key2", null);
 ```
 
 ## Requirement
@@ -43,7 +42,7 @@ Make `composer.json` file like the following.
 ```json
 {
       "require": {
-          "kohkimakimoto/earray": "2.0.*"
+          "kohkimakimoto/earray": "2.1.*"
       }
 }
 ```
@@ -57,7 +56,9 @@ $ php composer.phar install
 
 ## Usage
 
-### Accessing array values
+### Basic operations
+
+You can use `get`, `set`, `exists` and `delete` methods.
 
 ```php
 <?php
@@ -73,9 +74,12 @@ $earray->get("foo");             # "bar2"
 
 $earray->delete("foo");
 $earray->get("foo");             # null
+
+$earray->exists("foo2")          # true
+$earray->exists("foo")           # false
 ```
 
-### Accessing nested array values
+And you can use a delimiter (default `/`) for accessing nested array values.
 
 ```php
 <?php
@@ -95,7 +99,7 @@ $earray = new EArray(
         )
 );
 
-// You can get value from a nested array using a delimiter (default "/")
+// You can get a value from a nested array.
 $earray->get("foo/foo2-1");             # "foo5".
 $earray->get("foo");                    # EArray(array("foo2" => array("foo3","foo4",),"foo2-1" => "foo5"))
 $earray->get("foo")->get("foo2-1");     # "foo5".
@@ -104,23 +108,87 @@ $earray->get("foo")->toArray();         # array("foo2" => array("foo3","foo4",),
 // You can change a delimiter by the third argument.
 $earray->get("foo.foo2-1", null, ".");  # "foo5"
 
-// You can set a nested array using a delimiter
+// You can set a value to a nested array.
 $earray->set("foo/foo2-1", "foo5-modify");
 $earray->get("foo/foo2-1");             # "foo5-modify".
+
+// You can delete a value from a nested array.
+$earray->delete("foo/foo2-1");
+$earray->get("foo/foo2-1");             # null
+
+// You can check a value existing from a nested array.
+$earray->exists("foo/foo2-1")          # false
 ```
 
-### You can specify a default delemiter by constructor
+You can change the default delimiter.
 
 ```php
 <?php
 use Kohkimakimoto\EArray\EArray;
 
+// by the constructor's second argument.
 $earray = new EArray(array("foo" => array("bar" => "value")), ".");
 
 $earray->get("foo.bar"));    // "value"
+
+// by the setDelimiter method.
+$earray->setDelimiter("-");
+$earray->get("foo-bar"));    // "value"
 ```
 
-### Sort an array
+### Convenient methods
+
+#### each
+
+```php
+<?php
+use Kohkimakimoto\EArray\EArray;
+
+$earray = new EArray(
+    array(
+        "foo" => "aaa",
+        "bar" => "bbb",
+        "hoge" => "eee",
+        )
+);
+
+$earray->each(function($key, $value) {
+    echo $key.":".$value."\n";  // foo:aaa
+                                // bar:bbb
+                                // hoge:eee
+});
+
+$earray->each(function($value) {
+    echo $value."\n";  // aaa
+                       // bbb
+                       // eee
+});
+```
+
+#### filter
+
+```php
+<?php
+use Kohkimakimoto\EArray\EArray;
+
+$earray = new EArray(
+    array(
+        "kohki" => 34,
+        "alice" => 12,
+        "bob"   => 44,
+        )
+);
+
+$arr = $earray->filter(function($key, $value){
+    if ($value >= 20) {
+        return true;
+    } else {
+        return false;
+    }
+})->toArray(); // array("kohki" => 34, "bob" => 44)
+```
+
+#### sort
 
 ```php
 <?php
@@ -141,35 +209,80 @@ $array["a"]["details"]["weight"] = 6;
 $array["a"]["details"]["position"] = 1;
 
 $earray = new EArray($array);
-print_r($earray->sort("details/position")->toArray());  // sort by details/position 
+$earray->sortByValue(function($one, $another){
 
-// Result
-// array("a" => array(...), "b" => array(...), "c" => array(...), "d" => array(...), ...)
+    $v1 = $one->get("details/position");
+    $v2 = $another->get("details/position");
 
-print_r($earray->rsort("details/position")->toArray());  // reverse sort by details/position 
+    return $v1 - $v2;
 
-// Result
-// array("f" => array(...), "e" => array(...), "d" => array(...), "c" => array(...), ...)
+})->toArray();
 
-```
+/*
+Array
+(
+    [a] => Array
+        (
+            [details] => Array
+                (
+                    [weight] => 6
+                    [position] => 1
+                )
 
-### Using like a normal array
+        )
 
-```php
-<?php
-use Kohkimakimoto\EArray\EArray;
+    [b] => Array
+        (
+            [details] => Array
+                (
+                    [weight] => 5
+                    [position] => 2
+                )
 
-$earray = new EArray(array(
-    "foo" => "bar",
-    "foo1" => "bar1",
-    "foo2" => "bar2",
-    "foo3" => "bar3",
-    "foo4" => "bar4",
-));
+        )
 
-foreach ($earray as $k => $v) {
-   echo $v;  # "bar", "bar1", "bar2", ...
-}
+    [c] => Array
+        (
+            [details] => Array
+                (
+                    [weight] => 4
+                    [position] => 11
+                )
+
+        )
+
+    [d] => Array
+        (
+            [details] => Array
+                (
+                    [weight] => 3
+                    [position] => 22
+                )
+
+        )
+
+    [e] => Array
+        (
+            [details] => Array
+                (
+                    [weight] => 2
+                    [position] => 33
+                )
+
+        )
+
+    [f] => Array
+        (
+            [details] => Array
+                (
+                    [weight] => 1
+                    [position] => 34
+                )
+
+        )
+
+)
+*/
 ```
 
 ## License

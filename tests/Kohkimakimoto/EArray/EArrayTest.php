@@ -185,150 +185,6 @@ class EArrayTest extends \PHPUnit_Framework_TestCase
 
     }
 
-    public function testConstructException()
-    {
-        try {
-            $earray = new EArray("aaaaaaaa");
-        } catch (\RuntimeException $e) {
-            $this->assertEquals(true, true);
-            return;
-        }
-
-        $this->assertEquals(true, false);
-    }
-
-    public function testSort()
-    {
-
-        $array = array();
-        $array["f"]["details"]["weight"] = 1;
-        $array["f"]["details"]["position"] = 34;
-        $array["e"]["details"]["weight"] = 2;
-        $array["e"]["details"]["position"] = 33;
-        $array["d"]["details"]["weight"] = 3;
-        $array["d"]["details"]["position"] = 22;
-        $array["c"]["details"]["weight"] = 4;
-        $array["c"]["details"]["position"] = 11;
-        $array["b"]["details"]["weight"] = 5;
-        $array["b"]["details"]["position"] = 2;
-        $array["a"]["details"]["weight"] = 6;
-        $array["a"]["details"]["position"] = 1;
-
-        $earray = new EArray($array);
-        $sortedArray = $earray->sort("details/position")->toArray();
-
-        $this->assertEquals(array("details" => array("weight" => 6, "position" => 1)), array_shift($sortedArray));
-        $this->assertEquals(array("details" => array("weight" => 5, "position" => 2)), array_shift($sortedArray));
-        $this->assertEquals(array("details" => array("weight" => 4, "position" => 11)), array_shift($sortedArray));
-        $this->assertEquals(array("details" => array("weight" => 3, "position" => 22)), array_shift($sortedArray));
-        $this->assertEquals(array("details" => array("weight" => 2, "position" => 33)), array_shift($sortedArray));
-        $this->assertEquals(array("details" => array("weight" => 1, "position" => 34)), array_shift($sortedArray));
-    }
-
-    public function testSort2()
-    {
-        $array = array();
-        $array["g"] = 34;
-        $array["f"] = 33;
-        $array["e"] = 22;
-        $array["d"] = 11;
-        $array["c"] = 2;
-        $array["b"] = 2;
-        $array["a"] = 1;
-
-        $earray = new EArray($array);
-        $sortedArray = $earray->sort()->toArray();
-
-        $this->assertEquals(1, array_shift($sortedArray));
-        $this->assertEquals(2, array_shift($sortedArray));
-        $this->assertEquals(2, array_shift($sortedArray));
-        $this->assertEquals(11, array_shift($sortedArray));
-        $this->assertEquals(22, array_shift($sortedArray));
-        $this->assertEquals(33, array_shift($sortedArray));
-        $this->assertEquals(34, array_shift($sortedArray));
-    }
-
-    public function testSortByString()
-    {
-        $array = array();
-        $array["f"]["details"]["weight"] = 1;
-        $array["f"]["details"]["position"] = "C";
-        $array["e"]["details"]["weight"] = 2;
-        $array["e"]["details"]["position"] = "B";
-        $array["d"]["details"]["weight"] = 3;
-        $array["d"]["details"]["position"] = "ABC";
-        $array["c"]["details"]["weight"] = 4;
-        $array["c"]["details"]["position"] = "AAC";
-        $array["b"]["details"]["weight"] = 5;
-        $array["b"]["details"]["position"] = "AAB";
-        $array["a"]["details"]["weight"] = 6;
-        $array["a"]["details"]["position"] = "AAA";
-
-        $earray = new EArray($array);
-        $sortedArray = $earray->sort("details/position")->toArray();
-
-        $this->assertEquals(array("details" => array("weight" => 6, "position" => "AAA")), array_shift($sortedArray));
-        $this->assertEquals(array("details" => array("weight" => 5, "position" => "AAB")), array_shift($sortedArray));
-        $this->assertEquals(array("details" => array("weight" => 4, "position" => "AAC")), array_shift($sortedArray));
-        $this->assertEquals(array("details" => array("weight" => 3, "position" => "ABC")), array_shift($sortedArray));
-        $this->assertEquals(array("details" => array("weight" => 2, "position" => "B")), array_shift($sortedArray));
-        $this->assertEquals(array("details" => array("weight" => 1, "position" => "C")), array_shift($sortedArray));
-    }
-
-    public function testRsort()
-    {
-        $array = array();
-        $array["f"]["details"]["weight"] = 1;
-        $array["f"]["details"]["position"] = 34;
-        $array["e"]["details"]["weight"] = 2;
-        $array["e"]["details"]["position"] = 33;
-        $array["d"]["details"]["weight"] = 3;
-        $array["d"]["details"]["position"] = 22;
-        $array["c"]["details"]["weight"] = 4;
-        $array["c"]["details"]["position"] = 11;
-        $array["b"]["details"]["weight"] = 5;
-        $array["b"]["details"]["position"] = 2;
-        $array["a"]["details"]["weight"] = 6;
-        $array["a"]["details"]["position"] = 1;
-
-        $earray = new EArray($array);
-        $sortedArray = $earray->rsort("details/position")->toArray();
-
-        $this->assertEquals(array("details" => array("weight" => 1, "position" => 34)), array_shift($sortedArray));
-        $this->assertEquals(array("details" => array("weight" => 2, "position" => 33)), array_shift($sortedArray));
-        $this->assertEquals(array("details" => array("weight" => 3, "position" => 22)), array_shift($sortedArray));
-        $this->assertEquals(array("details" => array("weight" => 4, "position" => 11)), array_shift($sortedArray));
-        $this->assertEquals(array("details" => array("weight" => 5, "position" => 2)), array_shift($sortedArray));
-        $this->assertEquals(array("details" => array("weight" => 6, "position" => 1)), array_shift($sortedArray));
-    }
-
-    public function testRsortByString()
-    {
-        $array = array();
-        $array["f"]["details"]["weight"] = 1;
-        $array["f"]["details"]["position"] = "C";
-        $array["e"]["details"]["weight"] = 2;
-        $array["e"]["details"]["position"] = "B";
-        $array["d"]["details"]["weight"] = 3;
-        $array["d"]["details"]["position"] = "ABC";
-        $array["c"]["details"]["weight"] = 4;
-        $array["c"]["details"]["position"] = "AAC";
-        $array["b"]["details"]["weight"] = 5;
-        $array["b"]["details"]["position"] = "AAB";
-        $array["a"]["details"]["weight"] = 6;
-        $array["a"]["details"]["position"] = "AAA";
-
-        $earray = new EArray($array);
-        $sortedArray = $earray->rsort("details/position")->toArray();
-
-        $this->assertEquals(array("details" => array("weight" => 1, "position" => "C")), array_shift($sortedArray));
-        $this->assertEquals(array("details" => array("weight" => 2, "position" => "B")), array_shift($sortedArray));
-        $this->assertEquals(array("details" => array("weight" => 3, "position" => "ABC")), array_shift($sortedArray));
-        $this->assertEquals(array("details" => array("weight" => 4, "position" => "AAC")), array_shift($sortedArray));
-        $this->assertEquals(array("details" => array("weight" => 5, "position" => "AAB")), array_shift($sortedArray));
-        $this->assertEquals(array("details" => array("weight" => 6, "position" => "AAA")), array_shift($sortedArray));
-    }
-
     public function testSetUsingDelimiter()
     {
         // 1
@@ -412,9 +268,12 @@ class EArrayTest extends \PHPUnit_Framework_TestCase
             ), ".");
 
         $this->assertEquals("value", $earray->get("foo.bar"));
+
+        $earray->setDelimiter("+");
+        $this->assertEquals("value", $earray->get("foo+bar"));
     }
 
-    public function testGetKeys()
+    public function testKeys()
     {
         $earray = new EArray(
             array(
@@ -431,7 +290,7 @@ class EArrayTest extends \PHPUnit_Framework_TestCase
         );
 
         $this->assertEquals(array("foo", "bar", "hoge"), $earray->getKeys());
-
+        $this->assertEquals(array("foo", "bar", "hoge"), $earray->keys());
     }
 
     public function testExists()
@@ -458,8 +317,262 @@ class EArrayTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(true, $earray->exists("foo/foo2"));
         $this->assertEquals(false, $earray->exists("foo/foo3"));
         $this->assertEquals(true, $earray->exists("foo.foo2", "."));
+    }
 
-        $this->assertEquals(true, $earray->has("foo.foo2", "."));
+    public function testEach()
+    {
+        $earray = new EArray(
+            array(
+                "foo" => array(
+                    "foo2" => array(
+                        "foo3",
+                        "foo4",
+                        ),
+                    "foo2-1" => "foo5",
+                    ),
+                "bar" => "bbbb",
+                "hoge" => "eee",
+                )
+        );
+
+        try {
+            $earray->each("aaa");
+            $this->assertEquals(true, false);
+        } catch (\RuntimeException $e) {
+            $this->assertEquals(true, true);
+        }
+
+        $self = $this;
+        $earray->each(function($value) use ($self){
+            $self->assertNotEquals("hoge", $value);
+        });
+
+
+        $earray->each(function($key, $value) use ($self) {
+            if ($key == "hoge") {
+                $self->assertEquals("eee", $value);
+            }
+        });
+    }
+
+    public function testFilter()
+    {
+        $earray = new EArray(
+            array(
+                "foo" => array(
+                    "foo2" => array(
+                        "foo3",
+                        "foo4",
+                        ),
+                    "foo2-1" => "foo5",
+                    ),
+                "bar" => "bbbb",
+                "hoge" => "eee",
+                )
+        );
+
+        try {
+            $earray->filter("aaa");
+            $this->assertEquals(true, false);
+        } catch (\RuntimeException $e) {
+            $this->assertEquals(true, true);
+        }
+        
+        $filterdArray = $earray->filter(function($key, $value){
+            if ($key == "foo" || $key == "hoge") {
+                return true;
+            } else {
+                return false;
+            }
+        })->toArray();
+
+        $this->assertEquals(
+            array(
+                "foo" => array(
+                    "foo2" => array(
+                        "foo3",
+                        "foo4",
+                        ),
+                    "foo2-1" => "foo5",
+                    ),
+                "hoge" => "eee",
+                ),
+            $filterdArray);
+
+        $earray = new EArray(
+            array(
+                "kohki" => 34,
+                "alice" => 12,
+                "bob"   => 44,
+                )
+        );
+    }
+
+    public function testToString()
+    {
+        $earray = new EArray(
+            array(
+                "foo" => "aaaa",
+                "bar" => "bbbb",
+                "hoge" => "eeee",
+                )
+        );
+
+        $expectation = ""
+            ."Array\n"
+            ."(\n"
+            ."    [foo] => aaaa\n"
+            ."    [bar] => bbbb\n"
+            ."    [hoge] => eeee\n"
+            .")\n";
+        $this->assertEquals($expectation, (string)$earray);
+    }
+
+    public function testSize()
+    {
+        $earray = new EArray(
+            array(
+                "foo" => "aaaa",
+                "bar" => "bbbb",
+                "hoge" => "eeee",
+                )
+        );
+
+        $this->assertEquals(3, $earray->size());
+    }
+
+    public function testSortByValue()
+    {
+
+        $array = array();
+        $array["f"]["details"]["weight"] = 1;
+        $array["f"]["details"]["position"] = 34;
+        $array["e"]["details"]["weight"] = 2;
+        $array["e"]["details"]["position"] = 33;
+        $array["d"]["details"]["weight"] = 3;
+        $array["d"]["details"]["position"] = 22;
+        $array["c"]["details"]["weight"] = 4;
+        $array["c"]["details"]["position"] = 11;
+        $array["b"]["details"]["weight"] = 5;
+        $array["b"]["details"]["position"] = 2;
+        $array["a"]["details"]["weight"] = 6;
+        $array["a"]["details"]["position"] = 1;
+
+        $earray = new EArray($array);
+        $sortedArray = $earray->sortByValue(function($one, $another){
+
+            $v1 = $one->get("details/position");
+            $v2 = $another->get("details/position");
+
+            return $v1 - $v2;
+
+        })->toArray();
+
+        $this->assertEquals(array("details" => array("weight" => 6, "position" => 1)), array_shift($sortedArray));
+        $this->assertEquals(array("details" => array("weight" => 5, "position" => 2)), array_shift($sortedArray));
+        $this->assertEquals(array("details" => array("weight" => 4, "position" => 11)), array_shift($sortedArray));
+        $this->assertEquals(array("details" => array("weight" => 3, "position" => 22)), array_shift($sortedArray));
+        $this->assertEquals(array("details" => array("weight" => 2, "position" => 33)), array_shift($sortedArray));
+        $this->assertEquals(array("details" => array("weight" => 1, "position" => 34)), array_shift($sortedArray));
+    }
+
+    public function testSortByValue2()
+    {
+        $array = array();
+        $array["g"] = 34;
+        $array["f"] = 33;
+        $array["e"] = 22;
+        $array["d"] = 11;
+        $array["c"] = 2;
+        $array["b"] = 2;
+        $array["a"] = 1;
+
+        $earray = new EArray($array);
+        $sortedArray = $earray->sortByValue(function($one, $another){
+
+            if ($one == $another) {
+                return 0;
+            } else if ($one > $another) {
+                return 1;
+            } else {
+                return -1;
+            }
+
+        })->toArray();
+
+
+        $this->assertEquals(1, array_shift($sortedArray));
+        $this->assertEquals(2, array_shift($sortedArray));
+        $this->assertEquals(2, array_shift($sortedArray));
+        $this->assertEquals(11, array_shift($sortedArray));
+        $this->assertEquals(22, array_shift($sortedArray));
+        $this->assertEquals(33, array_shift($sortedArray));
+        $this->assertEquals(34, array_shift($sortedArray));
+    }
+
+    public function testSortByValueForString()
+    {
+        $array = array();
+        $array["f"]["details"]["weight"] = 1;
+        $array["f"]["details"]["position"] = "C";
+        $array["e"]["details"]["weight"] = 2;
+        $array["e"]["details"]["position"] = "B";
+        $array["d"]["details"]["weight"] = 3;
+        $array["d"]["details"]["position"] = "ABC";
+        $array["c"]["details"]["weight"] = 4;
+        $array["c"]["details"]["position"] = "AAC";
+        $array["b"]["details"]["weight"] = 5;
+        $array["b"]["details"]["position"] = "AAB";
+        $array["a"]["details"]["weight"] = 6;
+        $array["a"]["details"]["position"] = "AAA";
+
+        $earray = new EArray($array);
+        $sortedArray = $earray->sortByValue(function($one, $another){
+
+            $v1 = $one->get("details/position");
+            $v2 = $another->get("details/position");
+
+            return strcmp($v1, $v2);
+
+        })->toArray();
+
+        $this->assertEquals(array("details" => array("weight" => 6, "position" => "AAA")), array_shift($sortedArray));
+        $this->assertEquals(array("details" => array("weight" => 5, "position" => "AAB")), array_shift($sortedArray));
+        $this->assertEquals(array("details" => array("weight" => 4, "position" => "AAC")), array_shift($sortedArray));
+        $this->assertEquals(array("details" => array("weight" => 3, "position" => "ABC")), array_shift($sortedArray));
+        $this->assertEquals(array("details" => array("weight" => 2, "position" => "B")), array_shift($sortedArray));
+        $this->assertEquals(array("details" => array("weight" => 1, "position" => "C")), array_shift($sortedArray));
+    }
+
+    public function testSortByKey()
+    {
+        $array = array();
+        $array["f"]["details"]["weight"] = 1;
+        $array["f"]["details"]["position"] = 34;
+        $array["e"]["details"]["weight"] = 2;
+        $array["e"]["details"]["position"] = 33;
+        $array["d"]["details"]["weight"] = 3;
+        $array["d"]["details"]["position"] = 22;
+        $array["c"]["details"]["weight"] = 4;
+        $array["c"]["details"]["position"] = 11;
+        $array["b"]["details"]["weight"] = 5;
+        $array["b"]["details"]["position"] = 2;
+        $array["a"]["details"]["weight"] = 6;
+        $array["a"]["details"]["position"] = 1;
+
+        $earray = new EArray($array);
+        $sortedArray = $earray->sortByKey(function($one, $another){
+
+            return strcmp($one, $another);
+
+        })->toArray();
+
+        $this->assertEquals(array("details" => array("weight" => 6, "position" => 1)), array_shift($sortedArray));
+        $this->assertEquals(array("details" => array("weight" => 5, "position" => 2)), array_shift($sortedArray));
+        $this->assertEquals(array("details" => array("weight" => 4, "position" => 11)), array_shift($sortedArray));
+        $this->assertEquals(array("details" => array("weight" => 3, "position" => 22)), array_shift($sortedArray));
+        $this->assertEquals(array("details" => array("weight" => 2, "position" => 33)), array_shift($sortedArray));
+        $this->assertEquals(array("details" => array("weight" => 1, "position" => 34)), array_shift($sortedArray));
 
     }
 }

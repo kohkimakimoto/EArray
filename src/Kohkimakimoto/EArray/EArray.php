@@ -204,7 +204,10 @@ class EArray implements \ArrayAccess, \Iterator, \Countable
 
     public function csort($closure)
     {
-
+        $array = $this->array;
+        uasort($array, $closure);
+        $new = new EArray($array);
+        return $new;
     }
 
     /**

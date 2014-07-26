@@ -42,52 +42,11 @@ class EArray implements \ArrayAccess, \Iterator, \Countable
      */
     public function get($key, $default = null, $delimiter = null)
     {
-        if ($delimiter === null) {
-            $delimiter = $this->delimiter;
+        $ret = $this->getRawValue($key, $default, $delimiter);
+        if (is_array($ret)) {
+            $ret = new EArray($ret);
         }
-
-        $array = $this->array;
-
-        foreach (explode($delimiter, $key) as $k) {
-            $array = isset($array[$k]) ? $array[$k] : $default;
-        }
-
-        if (is_array($array)) {
-            $array = new EArray($array);
-        }
-        return $array;
-    }
-
-    /**
-     * Cheking exists key
-     * @param type $key 
-     * @param type $delimiter 
-     * @return type
-     */
-    public function exists($key, $delimiter = null)
-    {
-        if ($delimiter === null) {
-            $delimiter = $this->delimiter;
-        }
-
-        $array = $this->array;
-
-        foreach (explode($delimiter, $key) as $k) {
-
-            if (isset($array[$k])) {
-                $array = $array[$k];
-            } else {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    public function each($closure)
-    {
-        if (!$closure instanceof \Closure) {
-            throw new \RuntimeException("The argument must be a closure");
-        }
+        return $ret;
     }
 
     /**
@@ -177,6 +136,61 @@ class EArray implements \ArrayAccess, \Iterator, \Countable
     }
 
     /**
+     * Cheking exists key
+     * @param type $key 
+     * @param type $delimiter 
+     * @return type
+     */
+    public function exists($key, $delimiter = null)
+    {
+        if ($delimiter === null) {
+            $delimiter = $this->delimiter;
+        }
+
+        $array = $this->array;
+
+        foreach (explode($delimiter, $key) as $k) {
+
+            if (isset($array[$k])) {
+                $array = $array[$k];
+            } else {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public function each($closure)
+    {
+        if (!$closure instanceof \Closure) {
+            throw new \RuntimeException("The argument must be a closure");
+        }
+
+        foreach ($this as $key => $value) {
+            call_user_func($closure, $key, $value);
+        }
+
+        return $this;
+    }
+
+    public function filter($closure)
+    {
+        if (!$closure instanceof \Closure) {
+            throw new \RuntimeException("The argument must be a closure");
+        }
+
+        $new = new EArray();
+        foreach ($this as $key => $value) {
+            if(call_user_func($closure, $key, $value)) {
+                $rawValue = $this->getRawValue($key);
+                $new->set($key, $rawValue);
+            }
+        }
+
+        return $new;
+    }
+
+    /**
      * Set a default delimiter
      * @param String $delimiter
      */
@@ -184,6 +198,27 @@ class EArray implements \ArrayAccess, \Iterator, \Countable
     {
         $this->delimiter = $delimiter;
     }
+
+    public function __toString()
+    {
+        return print_r($this, true);
+    }
+
+    protected function getRawValue($key, $default = null, $delimiter = null)
+    {
+        if ($delimiter === null) {
+            $delimiter = $this->delimiter;
+        }
+
+        $array = $this->array;
+
+        foreach (explode($delimiter, $key) as $k) {
+            $array = isset($array[$k]) ? $array[$k] : $default;
+        }
+
+        return $array;
+    }
+
 
     /**
      * Convert one dimensional array into multidimensional array
@@ -289,23 +324,19 @@ class EArray implements \ArrayAccess, \Iterator, \Countable
     }
 
     public function offsetSet($offset, $value) {
-        $this->array[$offset] = $value;
+        $this->set($offset, $value);
     }
     
     public function offsetExists($offset) {
-        return isset($this->array[$offset]);
+        return $this->exists($offset);
     }
 
     public function offsetUnset($offset) {
-        unset($this->array[$offset]);
+        $this->delete($offset);
     }
 
     public function offsetGet($offset) {
-        $ret = isset($this->array[$offset]) ? $this->array[$offset] : null;
-        if (is_array($ret)) {
-            $ret = new EArray($ret);
-        }
-        return $ret;
+        return $this->get($offset);
     }
 
     public function current() {

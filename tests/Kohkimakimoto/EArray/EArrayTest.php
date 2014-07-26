@@ -486,6 +486,54 @@ class EArrayTest extends \PHPUnit_Framework_TestCase
             $this->assertEquals(true, true);
         }
         
+        $earray->each(function($key, $value){
+
+        });
+    }
+
+    public function testFilter()
+    {
+        $earray = new EArray(
+            array(
+                "foo" => array(
+                    "foo2" => array(
+                        "foo3",
+                        "foo4",
+                        ),
+                    "foo2-1" => "foo5",
+                    ),
+                "bar" => "bbbb",
+                "hoge" => "eee",
+                )
+        );
+
+        try {
+            $earray->filter("aaa");
+            $this->assertEquals(true, false);
+        } catch (\RuntimeException $e) {
+            $this->assertEquals(true, true);
+        }
+        
+        $filterdArray = $earray->filter(function($key, $value){
+            if ($key == "foo" || $key == "hoge") {
+                return true;
+            } else {
+                return false;
+            }
+        })->toArray();
+
+        $this->assertEquals(
+            array(
+                "foo" => array(
+                    "foo2" => array(
+                        "foo3",
+                        "foo4",
+                        ),
+                    "foo2-1" => "foo5",
+                    ),
+                "hoge" => "eee",
+                ),
+            $filterdArray);
     }
 
 }

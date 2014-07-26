@@ -486,12 +486,13 @@ class EArrayTest extends \PHPUnit_Framework_TestCase
             $this->assertEquals(true, true);
         }
 
-        $earray->each(function($value){
-            $this->assertNotEquals("hoge", $value);
+        $self = $this;
+        $earray->each(function($value) use ($self){
+            $self->assertNotEquals("hoge", $value);
         });
 
 
-        $earray->each(function($key, $value){
+        $earray->each(function($key, $value) use ($self) {
             if ($key == "hoge") {
                 $this->assertEquals("eee", $value);
             }

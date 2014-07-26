@@ -160,6 +160,11 @@ class EArray implements \ArrayAccess, \Iterator, \Countable
         return true;
     }
 
+    public function size()
+    {
+        return count($this->array);
+    }
+
     public function each($closure)
     {
         if (!$closure instanceof \Closure) {
@@ -245,6 +250,16 @@ class EArray implements \ArrayAccess, \Iterator, \Countable
 
     /**
      * Get keys
+     * @return array keys
+     */
+    public function keys()
+    {
+        return array_keys($this->array);
+    }
+
+    /**
+     * Get keys
+     * @deprecated
      * @return array keys
      */
     public function getKeys()

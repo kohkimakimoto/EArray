@@ -134,7 +134,6 @@ $earray->get("foo.bar"));    // "value"
 // by the setDelimiter method.
 $earray->setDelimiter("-");
 $earray->get("foo-bar"));    // "value"
-
 ```
 
 ### Convenient methods
@@ -187,7 +186,6 @@ $arr = $earray->filter(function($key, $value){
         return false;
     }
 })->toArray(); // array("kohki" => 34, "bob" => 44)
-
 ```
 
 ### Sort

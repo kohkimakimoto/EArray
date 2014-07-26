@@ -417,7 +417,7 @@ class EArrayTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals("value", $earray->get("foo+bar"));
     }
 
-    public function testGetKeys()
+    public function testKeys()
     {
         $earray = new EArray(
             array(
@@ -434,7 +434,7 @@ class EArrayTest extends \PHPUnit_Framework_TestCase
         );
 
         $this->assertEquals(array("foo", "bar", "hoge"), $earray->getKeys());
-
+        $this->assertEquals(array("foo", "bar", "hoge"), $earray->keys());
     }
 
     public function testExists()
@@ -569,7 +569,19 @@ class EArrayTest extends \PHPUnit_Framework_TestCase
             ."    [hoge] => eeee\n"
             .")\n";
         $this->assertEquals($expectation, (string)$earray);
+    }
 
+    public function testSize()
+    {
+        $earray = new EArray(
+            array(
+                "foo" => "aaaa",
+                "bar" => "bbbb",
+                "hoge" => "eeee",
+                )
+        );
+
+        $this->assertEquals(3, $earray->size());
     }
 
 }

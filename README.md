@@ -9,7 +9,7 @@ EArray is a small PHP class to provide convenient ways to access a PHP array.
 * Convenient accessing to a nested array.
 * You can use a default value when you try to get a value of array.
 * You can use this object as a normal array (Implementing `ArrayAccess`, `Iterator` and `Countable` interfase).
-* It has some convenient methods for array: `each`, `filter`,`sort`.
+* It has some convenient methods for array: `each`, `filter`, `sort`.
 
 It aims to remove code that checks array key existence. Especially for a nested array.
 Do you hate the code like the below?
@@ -120,7 +120,7 @@ $earray->get("foo/foo2-1");             # null
 $earray->exists("foo/foo2-1")          # false
 ```
 
-You can change a default delimiter.
+You can change the default delimiter.
 
 ```php
 <?php
@@ -188,7 +188,7 @@ $arr = $earray->filter(function($key, $value){
 })->toArray(); // array("kohki" => 34, "bob" => 44)
 ```
 
-### Sort
+### sort
 
 ```php
 <?php

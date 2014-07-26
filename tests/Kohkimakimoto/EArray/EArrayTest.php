@@ -412,6 +412,9 @@ class EArrayTest extends \PHPUnit_Framework_TestCase
             ), ".");
 
         $this->assertEquals("value", $earray->get("foo.bar"));
+
+        $earray->setDelimiter("+");
+        $this->assertEquals("value", $earray->get("foo+bar"));
     }
 
     public function testGetKeys()
@@ -458,8 +461,6 @@ class EArrayTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(true, $earray->exists("foo/foo2"));
         $this->assertEquals(false, $earray->exists("foo/foo3"));
         $this->assertEquals(true, $earray->exists("foo.foo2", "."));
-
-        $this->assertEquals(true, $earray->has("foo.foo2", "."));
-
     }
+
 }

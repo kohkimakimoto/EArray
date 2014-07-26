@@ -130,6 +130,55 @@ class EArray implements \ArrayAccess, \Iterator, \Countable
     }
 
     /**
+     * Delete a key
+     * @param String $key 
+     * @param String $delimiter 
+     * @return \Kohkimakimoto\EArray\EArray
+     */
+    public function delete($key, $delimiter = null)
+    {
+        if ($delimiter === null) {
+            $delimiter = $this->delimiter;
+        }
+
+        if (strpos($key, $delimiter) === false) {
+            unset($this->array[$key]);
+            return $this;
+        }
+
+        $array = $this->array;
+
+        $keys = explode($delimiter, $key);
+        $lastKeyIndex = count($keys) - 1;
+        $ref = &$array;
+        foreach (explode($delimiter, $key) as $i => $k) {
+            array_shift($keys);
+            if (isset($ref[$k])) {
+                if ($i === $lastKeyIndex) {
+                    // last key
+                    unset($ref[$k]);
+                } else {
+                    $ref = &$ref[$k];
+                }
+            } else {
+                throw new \RuntimeException("There is not the key '$k'");
+            }
+        }
+
+        $this->array = $array;
+        return $this;
+    }
+
+    /**
+     * Set a default delimiter
+     * @param String $delimiter
+     */
+    public function setDelimiter($delimiter)
+    {
+        $this->delimiter = $delimiter;
+    }
+
+    /**
      * Convert one dimensional array into multidimensional array
      */
     protected function convertMultidimentional($oneDimArray, $leafValue)
@@ -220,46 +269,6 @@ class EArray implements \ArrayAccess, \Iterator, \Countable
             return $cmp;
         });
 
-        return $this;
-    }
-
-    /**
-     * Delete a key
-     * @param String $key 
-     * @param String $delimiter 
-     * @return \Kohkimakimoto\EArray\EArray
-     */
-    public function delete($key, $delimiter = null)
-    {
-        if ($delimiter === null) {
-            $delimiter = $this->delimiter;
-        }
-
-        if (strpos($key, $delimiter) === false) {
-            unset($this->array[$key]);
-            return $this;
-        }
-
-        $array = $this->array;
-
-        $keys = explode($delimiter, $key);
-        $lastKeyIndex = count($keys) - 1;
-        $ref = &$array;
-        foreach (explode($delimiter, $key) as $i => $k) {
-            array_shift($keys);
-            if (isset($ref[$k])) {
-                if ($i === $lastKeyIndex) {
-                    // last key
-                    unset($ref[$k]);
-                } else {
-                    $ref = &$ref[$k];
-                }
-            } else {
-                throw new \RuntimeException("There is not the key '$k'");
-            }
-        }
-
-        $this->array = $array;
         return $this;
     }
 

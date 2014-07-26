@@ -188,7 +188,7 @@ $arr = $earray->filter(function($key, $value){
 })->toArray(); // array("kohki" => 34, "bob" => 44)
 ```
 
-### sort
+#### sort
 
 ```php
 <?php

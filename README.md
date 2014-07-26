@@ -4,15 +4,15 @@
 [![Coverage Status](https://coveralls.io/repos/kohkimakimoto/EArray/badge.png?branch=master)](https://coveralls.io/r/kohkimakimoto/EArray?branch=master)
 [![Latest Stable Version](https://poser.pugx.org/kohkimakimoto/earray/v/stable.png)](https://packagist.org/packages/kohkimakimoto/earray)
 
-EArray is a small PHP class to provide convenient ways to access a PHP Array.
+EArray is a small PHP class to provide convenient ways to access a PHP array.
 
-* Convenient accessing a nested array.
-* Supporting a default value.
-* Supporting a normal array operation.
-* Implement sort functions.
+* Convenient accessing to a nested array.
+* You can use a default value when you try to get a value of array.
+* You can use this object as a normal array (Implementing `ArrayAccess`, `Iterator` and `Countable` interfase).
+* It has some convenient methods for array: `each`, `filter`,`sort`.
 
 It aims to remove code that checks array key existence. Especially for a nested array.
-Do you hate like the following code?
+Do you hate the code like the below?
 
 ```php
 $val = null;
@@ -27,8 +27,7 @@ echo $val;
 You can write same things using EArray object.
 
 ```php
-$val = $earray->get("key/key2", null);
-echo $val;
+echo $earray->get("key/key2", null);
 ```
 
 ## Requirement
@@ -43,7 +42,7 @@ Make `composer.json` file like the following.
 ```json
 {
       "require": {
-          "kohkimakimoto/earray": "2.0.*"
+          "kohkimakimoto/earray": "2.1.*"
       }
 }
 ```
@@ -57,7 +56,9 @@ $ php composer.phar install
 
 ## Usage
 
-### Accessing array values
+### Basic operations
+
+You can use `get`, `set`, `exists` and `delete` methods.
 
 ```php
 <?php
@@ -73,9 +74,12 @@ $earray->get("foo");             # "bar2"
 
 $earray->delete("foo");
 $earray->get("foo");             # null
+
+$earray->exists("foo2")          # true
+$earray->exists("foo")           # false
 ```
 
-### Accessing nested array values
+And you can use a delimiter (default `/`) for accessing nested array values.
 
 ```php
 <?php
@@ -95,7 +99,7 @@ $earray = new EArray(
         )
 );
 
-// You can get value from a nested array using a delimiter (default "/")
+// You can get a value from a nested array.
 $earray->get("foo/foo2-1");             # "foo5".
 $earray->get("foo");                    # EArray(array("foo2" => array("foo3","foo4",),"foo2-1" => "foo5"))
 $earray->get("foo")->get("foo2-1");     # "foo5".
@@ -104,9 +108,16 @@ $earray->get("foo")->toArray();         # array("foo2" => array("foo3","foo4",),
 // You can change a delimiter by the third argument.
 $earray->get("foo.foo2-1", null, ".");  # "foo5"
 
-// You can set a nested array using a delimiter
+// You can set a value to a nested array.
 $earray->set("foo/foo2-1", "foo5-modify");
 $earray->get("foo/foo2-1");             # "foo5-modify".
+
+// You can delete a value from a nested array.
+$earray->delete("foo/foo2-1");
+$earray->get("foo/foo2-1");             # null
+
+// You can check a value existing from a nested array.
+$earray->exists("foo/foo2-1")          # false
 ```
 
 ### You can specify a default delemiter by constructor

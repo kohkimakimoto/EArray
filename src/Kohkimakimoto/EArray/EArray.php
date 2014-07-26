@@ -202,6 +202,11 @@ class EArray implements \ArrayAccess, \Iterator, \Countable
         return $new;
     }
 
+    public function csort($closure)
+    {
+
+    }
+
     /**
      * Set a default delimiter
      * @param String $delimiter

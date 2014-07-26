@@ -83,6 +83,13 @@ class EArray implements \ArrayAccess, \Iterator, \Countable
         return true;
     }
 
+    public function each($closure)
+    {
+        if (!$closure instanceof \Closure) {
+            throw new \RuntimeException("The argument must be a closure");
+        }
+    }
+
     /**
      * Set a value
      * @param type $key 

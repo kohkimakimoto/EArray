@@ -463,4 +463,29 @@ class EArrayTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(true, $earray->exists("foo.foo2", "."));
     }
 
+    public function testEach()
+    {
+        $earray = new EArray(
+            array(
+                "foo" => array(
+                    "foo2" => array(
+                        "foo3",
+                        "foo4",
+                        ),
+                    "foo2-1" => "foo5",
+                    ),
+                "bar" => "bbbb",
+                "hoge" => "eee",
+                )
+        );
+
+        try {
+            $earray->each("aaa");
+            $this->assertEquals(true, false);
+        } catch (\RuntimeException $e) {
+            $this->assertEquals(true, true);
+        }
+        
+    }
+
 }

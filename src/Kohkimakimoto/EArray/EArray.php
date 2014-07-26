@@ -166,8 +166,15 @@ class EArray implements \ArrayAccess, \Iterator, \Countable
             throw new \RuntimeException("The argument must be a closure");
         }
 
-        foreach ($this as $key => $value) {
-            call_user_func($closure, $key, $value);
+        $ref = new \ReflectionFunction($closure);
+        if ($ref->getNumberOfParameters() === 1) {
+            foreach ($this as $value) {
+                call_user_func($closure, $value);
+            }
+        } else {
+            foreach ($this as $key => $value) {
+                call_user_func($closure, $key, $value);
+            }
         }
 
         return $this;

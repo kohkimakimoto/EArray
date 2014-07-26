@@ -485,9 +485,16 @@ class EArrayTest extends \PHPUnit_Framework_TestCase
         } catch (\RuntimeException $e) {
             $this->assertEquals(true, true);
         }
-        
-        $earray->each(function($key, $value){
 
+        $earray->each(function($value){
+            $this->assertNotEquals("hoge", $value);
+        });
+
+
+        $earray->each(function($key, $value){
+            if ($key == "hoge") {
+                $this->assertEquals("eee", $value);
+            }
         });
     }
 
@@ -534,6 +541,14 @@ class EArrayTest extends \PHPUnit_Framework_TestCase
                 "hoge" => "eee",
                 ),
             $filterdArray);
+
+        $earray = new EArray(
+            array(
+                "kohki" => 34,
+                "alice" => 12,
+                "bob"   => 44,
+                )
+        );
     }
 
     public function testToString()

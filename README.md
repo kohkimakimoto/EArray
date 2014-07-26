@@ -120,18 +120,77 @@ $earray->get("foo/foo2-1");             # null
 $earray->exists("foo/foo2-1")          # false
 ```
 
-### You can specify a default delemiter by constructor
+You can change a default delimiter.
 
 ```php
 <?php
 use Kohkimakimoto\EArray\EArray;
 
+// by the constructor's second argument.
 $earray = new EArray(array("foo" => array("bar" => "value")), ".");
 
 $earray->get("foo.bar"));    // "value"
+
+// by the setDelimiter method.
+$earray->setDelimiter("-");
+$earray->get("foo-bar"));    // "value"
+
 ```
 
-### Sort an array
+### Convenient methods
+
+#### each
+
+```php
+<?php
+use Kohkimakimoto\EArray\EArray;
+
+$earray = new EArray(
+    array(
+        "foo" => "aaa",
+        "bar" => "bbb",
+        "hoge" => "eee",
+        )
+);
+
+$earray->each(function($key, $value) {
+    echo $key.":".$value."\n";  // foo:aaa
+                                // bar:bbb
+                                // hoge:eee
+});
+
+$earray->each(function($value) {
+    echo $value."\n";  // aaa
+                       // bbb
+                       // eee
+});
+```
+
+#### filter
+
+```php
+<?php
+use Kohkimakimoto\EArray\EArray;
+
+$earray = new EArray(
+    array(
+        "kohki" => 34,
+        "alice" => 12,
+        "bob"   => 44,
+        )
+);
+
+$arr = $earray->filter(function($key, $value){
+    if ($value >= 20) {
+        return true;
+    } else {
+        return false;
+    }
+})->toArray(); // array("kohki" => 34, "bob" => 44)
+
+```
+
+### Sort
 
 ```php
 <?php
@@ -162,25 +221,6 @@ print_r($earray->rsort("details/position")->toArray());  // reverse sort by deta
 // Result
 // array("f" => array(...), "e" => array(...), "d" => array(...), "c" => array(...), ...)
 
-```
-
-### Using like a normal array
-
-```php
-<?php
-use Kohkimakimoto\EArray\EArray;
-
-$earray = new EArray(array(
-    "foo" => "bar",
-    "foo1" => "bar1",
-    "foo2" => "bar2",
-    "foo3" => "bar3",
-    "foo4" => "bar4",
-));
-
-foreach ($earray as $k => $v) {
-   echo $v;  # "bar", "bar1", "bar2", ...
-}
 ```
 
 ## License

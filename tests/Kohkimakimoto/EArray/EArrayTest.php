@@ -464,13 +464,7 @@ class EArrayTest extends \PHPUnit_Framework_TestCase
             $v1 = $one->get("details/position");
             $v2 = $another->get("details/position");
 
-            if ($v1 == $v2) {
-                return 0;
-            } else if ($v1 > $v2) {
-                return 1;
-            } else {
-                return -1;
-            }
+            return $v1 - $v2;
 
         })->toArray();
 

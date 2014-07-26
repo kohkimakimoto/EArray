@@ -209,16 +209,80 @@ $array["a"]["details"]["weight"] = 6;
 $array["a"]["details"]["position"] = 1;
 
 $earray = new EArray($array);
-print_r($earray->sort("details/position")->toArray());  // sort by details/position 
+$earray->sortByValue(function($one, $another){
 
-// Result
-// array("a" => array(...), "b" => array(...), "c" => array(...), "d" => array(...), ...)
+    $v1 = $one->get("details/position");
+    $v2 = $another->get("details/position");
 
-print_r($earray->rsort("details/position")->toArray());  // reverse sort by details/position 
+    return $v1 - $v2;
 
-// Result
-// array("f" => array(...), "e" => array(...), "d" => array(...), "c" => array(...), ...)
+})->toArray();
 
+/*
+Array
+(
+    [a] => Array
+        (
+            [details] => Array
+                (
+                    [weight] => 6
+                    [position] => 1
+                )
+
+        )
+
+    [b] => Array
+        (
+            [details] => Array
+                (
+                    [weight] => 5
+                    [position] => 2
+                )
+
+        )
+
+    [c] => Array
+        (
+            [details] => Array
+                (
+                    [weight] => 4
+                    [position] => 11
+                )
+
+        )
+
+    [d] => Array
+        (
+            [details] => Array
+                (
+                    [weight] => 3
+                    [position] => 22
+                )
+
+        )
+
+    [e] => Array
+        (
+            [details] => Array
+                (
+                    [weight] => 2
+                    [position] => 33
+                )
+
+        )
+
+    [f] => Array
+        (
+            [details] => Array
+                (
+                    [weight] => 1
+                    [position] => 34
+                )
+
+        )
+
+)
+*/
 ```
 
 ## License

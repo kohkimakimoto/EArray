@@ -201,7 +201,7 @@ class EArray implements \ArrayAccess, \Iterator, \Countable
 
     public function __toString()
     {
-        return print_r($this, true);
+        return print_r($this->toArray(), true);
     }
 
     protected function getRawValue($key, $default = null, $delimiter = null)

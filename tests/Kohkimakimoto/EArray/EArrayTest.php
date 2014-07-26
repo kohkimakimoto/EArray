@@ -536,4 +536,25 @@ class EArrayTest extends \PHPUnit_Framework_TestCase
             $filterdArray);
     }
 
+    public function testToString()
+    {
+        $earray = new EArray(
+            array(
+                "foo" => "aaaa",
+                "bar" => "bbbb",
+                "hoge" => "eeee",
+                )
+        );
+
+        $expectation = ""
+            ."Array\n"
+            ."(\n"
+            ."    [foo] => aaaa\n"
+            ."    [bar] => bbbb\n"
+            ."    [hoge] => eeee\n"
+            .")\n";
+        $this->assertEquals($expectation, (string)$earray);
+
+    }
+
 }

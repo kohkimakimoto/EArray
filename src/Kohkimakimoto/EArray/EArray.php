@@ -13,32 +13,34 @@ class EArray implements \ArrayAccess, \Iterator, \Countable
 
     /**
      * array data
-     * @var [type]
+     * @var array
      */
     protected $array;
-    
+
     /**
      * Default delimiter
-     * @var [type]
+     * @var string
      */
     protected $delimiter;
 
     /**
      * Constructor
-     * @param Array $array
+     * @param  array  $array
+     * @param  string $delimiter
+     * @return void
      */
-    public function __construct($array = array(), $delimiter = "/")
+    public function __construct(array $array = array(), $delimiter = "/")
     {
-        if (!is_array($array)) {
-            throw new \RuntimeException("You need to pass Array to constructor.");
-        }
         $this->array = $array;
         $this->delimiter = $delimiter;
     }
-    
+
     /**
      * Get a value
-     * @param unknown $key
+     * @param  mixed  $key
+     * @param  mixed  $default
+     * @param  string $delimiter
+     * @return mixed
      */
     public function get($key, $default = null, $delimiter = null)
     {
@@ -46,24 +48,26 @@ class EArray implements \ArrayAccess, \Iterator, \Countable
         if (is_array($ret)) {
             $ret = new EArray($ret);
         }
+
         return $ret;
     }
 
     /**
      * Set a value
-     * @param type $key 
-     * @param type $value 
-     * @param type $delimiter 
+     * @param  mixed                        $key
+     * @param  mixed                        $value
+     * @param  string                       $delimiter
      * @return \Kohkimakimoto\EArray\EArray
      */
     public function set($key, $value, $delimiter = null)
-    {   
+    {
         if ($delimiter === null) {
             $delimiter = $this->delimiter;
         }
 
         if (strpos($key, $delimiter) === false) {
             $this->array[$key] = $value;
+
             return $this;
         }
 
@@ -92,13 +96,14 @@ class EArray implements \ArrayAccess, \Iterator, \Countable
         }
 
         $this->array = $array;
+
         return $this;
     }
 
     /**
      * Delete a key
-     * @param String $key 
-     * @param String $delimiter 
+     * @param  mixed                        $key
+     * @param  string                       $delimiter
      * @return \Kohkimakimoto\EArray\EArray
      */
     public function delete($key, $delimiter = null)
@@ -109,6 +114,7 @@ class EArray implements \ArrayAccess, \Iterator, \Countable
 
         if (strpos($key, $delimiter) === false) {
             unset($this->array[$key]);
+
             return $this;
         }
 
@@ -132,14 +138,15 @@ class EArray implements \ArrayAccess, \Iterator, \Countable
         }
 
         $this->array = $array;
+
         return $this;
     }
 
     /**
-     * Cheking exists key
-     * @param type $key 
-     * @param type $delimiter 
-     * @return type
+     * Check key existing.
+     * @param  mixed  $key
+     * @param  string $delimiter
+     * @return bool
      */
     public function exists($key, $delimiter = null)
     {
@@ -157,14 +164,24 @@ class EArray implements \ArrayAccess, \Iterator, \Countable
                 return false;
             }
         }
+
         return true;
     }
 
+    /**
+     * Gat size of array.
+     * @return int
+     */
     public function size()
     {
         return count($this->array);
     }
 
+    /**
+     * Process each array elements
+     * @param  callable                     $closure
+     * @return \Kohkimakimoto\EArray\EArray
+     */
     public function each($closure)
     {
         if (!$closure instanceof \Closure) {
@@ -185,6 +202,11 @@ class EArray implements \ArrayAccess, \Iterator, \Countable
         return $this;
     }
 
+    /**
+     * Process filter
+     * @param  callable                     $closure
+     * @return \Kohkimakimoto\EArray\EArray
+     */
     public function filter($closure)
     {
         if (!$closure instanceof \Closure) {
@@ -193,7 +215,7 @@ class EArray implements \ArrayAccess, \Iterator, \Countable
 
         $new = new EArray();
         foreach ($this as $key => $value) {
-            if(call_user_func($closure, $key, $value)) {
+            if (call_user_func($closure, $key, $value)) {
                 $rawValue = $this->getRawValue($key);
                 $new->set($key, $rawValue);
             }
@@ -202,41 +224,49 @@ class EArray implements \ArrayAccess, \Iterator, \Countable
         return $new;
     }
 
+    /**
+     * Sort by value
+     * @param  callable                     $closure
+     * @return \Kohkimakimoto\EArray\EArray
+     */
     public function sortByValue($closure)
     {
         $array = $this->array;
-        uasort($array, function($one, $another) use ($closure) {
+        uasort($array, function ($one, $another) use ($closure) {
             if (is_array($one)) {
                 $one = new EArray($one);
             }
             if (is_array($another)) {
                 $another = new EArray($another);
             }
+
             return $closure($one, $another);
         });
         $new = new EArray($array);
+
         return $new;
     }
 
+    /**
+     * Sort by key
+     * @param  callable                     $closure
+     * @return \Kohkimakimoto\EArray\EArray
+     */
     public function sortByKey($closure)
     {
         $array = $this->array;
-        uasort($array, function($one, $another) use ($closure) {
-            if (is_array($one)) {
-                $one = new EArray($one);
-            }
-            if (is_array($another)) {
-                $another = new EArray($another);
-            }
+        uksort($array, function ($one, $another) use ($closure) {
             return $closure($one, $another);
         });
         $new = new EArray($array);
+
         return $new;
     }
 
     /**
      * Set a default delimiter
-     * @param String $delimiter
+     * @param  string $delimiter
+     * @return void
      */
     public function setDelimiter($delimiter)
     {
@@ -265,6 +295,9 @@ class EArray implements \ArrayAccess, \Iterator, \Countable
 
     /**
      * Convert one dimensional array into multidimensional array
+     * @param  array $oneDimArray
+     * @param  mixed $leafValue
+     * @return array
      */
     protected function convertMultidimentional($oneDimArray, $leafValue)
     {
@@ -281,7 +314,7 @@ class EArray implements \ArrayAccess, \Iterator, \Countable
 
     /**
      * Get keys
-     * @return array keys
+     * @return array
      */
     public function keys()
     {
@@ -291,126 +324,79 @@ class EArray implements \ArrayAccess, \Iterator, \Countable
     /**
      * Get keys
      * @deprecated
-     * @return array keys
+     * @return array
      */
     public function getKeys()
     {
         return array_keys($this->array);
     }
 
-    /*
-    public function sort($key = null, $delimiter = null)
-    {
-        return $this->doSort($key, $delimiter, self::ORDER_LOW_TO_HIGH);
-    }
-
-    public function rsort($key = null, $delimiter = null)
-    {
-        return $this->doSort($key, $delimiter, self::ORDER_HIGHT_TO_LOW);
-    }
-
-    protected function doSort($key = null, $delimiter = null, $order = 1)
-    {
-        if ($delimiter === null) {
-            $delimiter = $this->delimiter;
-        }
-
-        uasort($this->array, function($one, $another) use ($key, $delimiter, $order) {
-
-            $oneValue = null;
-            if (is_array($one)) {
-                $one = new EArray($one);
-                $oneValue = $one->get($key, 0, $delimiter);
-            } else {
-                $oneValue = $one;
-            }
-
-            $anotherValue = null;
-            if (is_array($another)) {
-                $another = new EArray($another);
-                $anotherValue = $another->get($key, 0, $delimiter);
-            } else {
-                $anotherValue = $another;
-            }
-
-            $cmp = 0;
-            if (is_numeric($oneValue) && is_numeric($anotherValue)) {
-                $oneValue = floatval($oneValue);
-                $anotherValue = floatval($anotherValue);
-                if ($oneValue == $anotherValue) {
-                    $cmp = 0;
-                } else {
-                    $cmp = ($oneValue < $anotherValue) ? -1 : 1;
-                }
-            } else {
-                $cmp = strcmp($oneValue, $anotherValue);
-            }
-
-            if ($order === EArray::ORDER_HIGHT_TO_LOW) {
-                $cmp = -$cmp;
-            }
-
-            return $cmp;
-        });
-
-        return $this;
-    }
-    */
-   
     /**
-    * Get a array.
-    * @return array:
-    */
+     * Get a array
+     * @return array
+     */
     public function toArray()
     {
         return $this->array;
     }
 
-    public function offsetSet($offset, $value) {
+    public function offsetSet($offset, $value)
+    {
         $this->set($offset, $value);
     }
-    
-    public function offsetExists($offset) {
+
+    public function offsetExists($offset)
+    {
         return $this->exists($offset);
     }
 
-    public function offsetUnset($offset) {
+    public function offsetUnset($offset)
+    {
         $this->delete($offset);
     }
 
-    public function offsetGet($offset) {
+    public function offsetGet($offset)
+    {
         return $this->get($offset);
     }
 
-    public function current() {
+    public function current()
+    {
         $ret = current($this->array);
         if (is_array($ret)) {
             $ret = new EArray($ret);
         }
+
         return $ret;
     }
-    
-    public function key() {
+
+    public function key()
+    {
         return key($this->array);
     }
-    
-    public function next() {
+
+    public function next()
+    {
         $ret = next($this->array);
         if (is_array($ret)) {
             $ret = new EArray($ret);
         }
+
         return $ret;
     }
 
-    public function rewind() {
+    public function rewind()
+    {
         reset($this->array);
     }
 
-    public function valid() {
+    public function valid()
+    {
         return ($this->current() !== false);
     }
 
-     public function count() {
+     public function count()
+     {
         return count($this->array);
     }
 }

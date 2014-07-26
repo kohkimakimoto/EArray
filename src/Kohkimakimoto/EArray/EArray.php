@@ -202,7 +202,23 @@ class EArray implements \ArrayAccess, \Iterator, \Countable
         return $new;
     }
 
-    public function sort($closure)
+    public function sortByValue($closure)
+    {
+        $array = $this->array;
+        uasort($array, function($one, $another) use ($closure) {
+            if (is_array($one)) {
+                $one = new EArray($one);
+            }
+            if (is_array($another)) {
+                $another = new EArray($another);
+            }
+            return $closure($one, $another);
+        });
+        $new = new EArray($array);
+        return $new;
+    }
+
+    public function sortByKey($closure)
     {
         $array = $this->array;
         uasort($array, function($one, $another) use ($closure) {

@@ -56,6 +56,12 @@ $ php composer.phar install
 
 ## Usage
 
+* [Basic operations](#basic-operations)
+* [Convenient methods](#convenient-methods)
+  * [each](#each)
+  * [filter](#filter)
+  * [sort](#sort)
+
 ### Basic operations
 
 You can use `get`, `set`, `exists` and `delete` methods.

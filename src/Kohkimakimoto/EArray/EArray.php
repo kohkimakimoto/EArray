@@ -8,9 +8,6 @@ namespace Kohkimakimoto\EArray;
  */
 class EArray implements \ArrayAccess, \Iterator, \Countable
 {
-    const ORDER_LOW_TO_HIGH = 1;
-    const ORDER_HIGHT_TO_LOW = -1;
-
     /**
      * array data
      * @var array

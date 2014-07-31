@@ -309,6 +309,18 @@ class EArray implements \ArrayAccess, \Iterator, \Countable
         return $multiDimArray;
     }
 
+
+    public function register($methodName, $closure)
+    {
+
+    }
+
+    public function __call($name, $arguments)
+    {
+
+    }
+
+    
     /**
      * Get keys
      * @return array

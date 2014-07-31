@@ -575,4 +575,25 @@ class EArrayTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(array("details" => array("weight" => 1, "position" => 34)), array_shift($sortedArray));
 
     }
+
+    public function testRegisterMethod()
+    {
+        $earray = new EArray(
+            array(
+                "kohki" => 30,
+                "taro" => 40,
+                "masaru" => 50,
+                )
+        );
+
+        $earray->register("getAverage", function ($earray) {
+            $total = 0;
+            foreach ($earray as $v) {
+                $total += $v;
+            }
+            return $total / count($earray);
+        });
+
+        $this->assertEquals(40, $earray->getAverage());
+    }
 }

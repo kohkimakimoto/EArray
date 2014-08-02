@@ -37,13 +37,13 @@ PHP5.3 or later.
 
 ## Installation
 
-You can use composer installation. 
+You can use composer installation.
 Make `composer.json` file like the following.
 
 ```json
 {
       "require": {
-          "kohkimakimoto/earray": "2.1.*"
+          "kohkimakimoto/earray": "2.2.*"
       }
 }
 ```

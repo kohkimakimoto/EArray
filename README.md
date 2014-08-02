@@ -10,6 +10,7 @@ EArray is a small PHP class to provide convenient ways to access a PHP array.
 * You can use a default value when you try to get a value of array.
 * You can use this object as a normal array (Implementing `ArrayAccess`, `Iterator` and `Countable` interfase).
 * It has some convenient methods for array: `each`, `filter`, `sort`.
+* You can register custom methods to array.
 
 It aims to remove code that checks array key existence. Especially for a nested array.
 Do you hate the code like the below?
@@ -61,7 +62,7 @@ $ php composer.phar install
   * [each](#each)
   * [filter](#filter)
   * [sort](#sort)
-  * [Registering a method](#registering-a-method)
+* [Registering a custom method](#registering-a-method)
 
 ### Basic operations
 
@@ -214,7 +215,9 @@ $earray->sortByValue(function($one, $another){
 // array("a" => array(...), "b" => array(...), "c" => array(...), "d" => array(...), ...)
 ```
 
-#### Registering a method
+### Registering a custom method
+
+You can register custom methods to array.
 
 ```php
 $earray = new EArray(

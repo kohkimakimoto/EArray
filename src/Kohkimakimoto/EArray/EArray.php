@@ -21,6 +21,12 @@ class EArray implements \ArrayAccess, \Iterator, \Countable
     protected $delimiter;
 
     /**
+     * registerd methods
+     * @var array
+     */
+    protected $methods;
+
+    /**
      * Constructor
      * @param  array  $array
      * @param  string $delimiter
@@ -307,6 +313,24 @@ class EArray implements \ArrayAccess, \Iterator, \Countable
         $ref = $leafValue;
 
         return $multiDimArray;
+    }
+
+    public function register($methodName, \Closure $closure)
+    {
+        $this->methods[$methodName] = $closure;
+
+        return $this;
+    }
+
+    public function __call($name, $args)
+    {
+        if (!isset($this->methods[$name])) {
+            throw new \RuntimeException("Unknown method '$name'.");
+        }
+        $method = $this->methods[$name];
+        array_unshift($args, $this);
+
+        return call_user_func_array($method, $args);
     }
 
     /**

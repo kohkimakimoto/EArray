@@ -62,7 +62,7 @@ $ php composer.phar install
   * [each](#each)
   * [filter](#filter)
   * [sort](#sort)
-* [Registering a custom method](#registering-a-method)
+* [Registering a custom method](#registering-a-custom-method)
 
 ### Basic operations
 

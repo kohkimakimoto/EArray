@@ -216,7 +216,7 @@ $earray->sortByValue(function($one, $another){
 
 #### Registering a method
 
-```
+```php
 $earray = new EArray(
     array(
         "kohki" => 30,

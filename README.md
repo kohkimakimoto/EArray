@@ -248,7 +248,7 @@ $earray->register("getAverageAndAddNumber", function ($earray, $number) {
     return $ave + $number;
 });
 
-$earray->getAverage(100);  // 140
+$earray->getAverageAndAddNumber(100);  // 140
 ```
 
 ## License

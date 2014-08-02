@@ -315,10 +315,10 @@ class EArray implements \ArrayAccess, \Iterator, \Countable
         return $multiDimArray;
     }
 
-
     public function register($methodName, \Closure $closure)
     {
         $this->methods[$methodName] = $closure;
+
         return $this;
     }
 
@@ -329,6 +329,7 @@ class EArray implements \ArrayAccess, \Iterator, \Countable
         }
         $method = $this->methods[$name];
         array_unshift($args, $this);
+
         return call_user_func_array($method, $args);
     }
 

@@ -377,7 +377,7 @@ class EArrayTest extends \PHPUnit_Framework_TestCase
         } catch (\RuntimeException $e) {
             $this->assertEquals(true, true);
         }
-        
+
         $filterdArray = $earray->filter(function($key, $value){
             if ($key == "foo" || $key == "hoge") {
                 return true;
@@ -594,6 +594,26 @@ class EArrayTest extends \PHPUnit_Framework_TestCase
             return $total / count($earray);
         });
 
-        // $this->assertEquals(40, $earray->getAverage());
+        $this->assertEquals(40, $earray->getAverage());
+
+        try {
+            $earray->getFooBar();
+            $this->assertEquals(false, true);
+        } catch (\RuntimeException $e) {
+            $this->assertEquals(true, true);
+        }
+
+        $earray->register("getAverageAndAdd", function ($earray, $add) {
+            $total = 0;
+            foreach ($earray as $v) {
+                $total += $v;
+            }
+            $ave = $total / count($earray);
+
+            return $ave + $add;
+        });
+
+        $this->assertEquals(140, $earray->getAverageAndAdd(100));
+        $this->assertEquals(90, $earray->getAverageAndAdd(50));
     }
 }

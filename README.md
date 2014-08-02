@@ -61,6 +61,7 @@ $ php composer.phar install
   * [each](#each)
   * [filter](#filter)
   * [sort](#sort)
+  * [Registering a method](#registering-a-method)
 
 ### Basic operations
 
@@ -88,9 +89,6 @@ $earray->exists("foo")           # false
 And you can use a delimiter (default `/`) for accessing nested array values.
 
 ```php
-<?php
-use Kohkimakimoto\EArray\EArray;
-
 $earray = new EArray(
     array(
         "foo" => array(
@@ -129,9 +127,6 @@ $earray->exists("foo/foo2-1")          # false
 You can change the default delimiter.
 
 ```php
-<?php
-use Kohkimakimoto\EArray\EArray;
-
 // by the constructor's second argument.
 $earray = new EArray(array("foo" => array("bar" => "value")), ".");
 
@@ -147,9 +142,6 @@ $earray->get("foo-bar"));    // "value"
 #### each
 
 ```php
-<?php
-use Kohkimakimoto\EArray\EArray;
-
 $earray = new EArray(
     array(
         "foo" => "aaa",
@@ -174,9 +166,6 @@ $earray->each(function($value) {
 #### filter
 
 ```php
-<?php
-use Kohkimakimoto\EArray\EArray;
-
 $earray = new EArray(
     array(
         "kohki" => 34,
@@ -197,9 +186,6 @@ $arr = $earray->filter(function($key, $value){
 #### sort
 
 ```php
-<?php
-use Kohkimakimoto\EArray\EArray;
-
 $array = array();
 $array["f"]["details"]["weight"] = 1;
 $array["f"]["details"]["position"] = 34;
@@ -224,71 +210,42 @@ $earray->sortByValue(function($one, $another){
 
 })->toArray();
 
-/*
-Array
-(
-    [a] => Array
-        (
-            [details] => Array
-                (
-                    [weight] => 6
-                    [position] => 1
-                )
+// Sort by details/position
+// array("a" => array(...), "b" => array(...), "c" => array(...), "d" => array(...), ...)
+```
 
+#### Registering a method
+
+```
+$earray = new EArray(
+    array(
+        "kohki" => 30,
+        "taro" => 40,
+        "masaru" => 50,
         )
+);
 
-    [b] => Array
-        (
-            [details] => Array
-                (
-                    [weight] => 5
-                    [position] => 2
-                )
+$earray->register("getAverage", function ($earray) {
+    $total = 0;
+    foreach ($earray as $v) {
+        $total += $v;
+    }
+    return $total / count($earray);
+});
 
-        )
+$earray->getAverage();  // 40
 
-    [c] => Array
-        (
-            [details] => Array
-                (
-                    [weight] => 4
-                    [position] => 11
-                )
+// using arguments when the method is called.
+$earray->register("getAverageAndAddNumber", function ($earray, $number) {
+    $total = 0;
+    foreach ($earray as $v) {
+        $total += $v;
+    }
+    $ave = $total / count($earray);
+    return $ave + $number;
+});
 
-        )
-
-    [d] => Array
-        (
-            [details] => Array
-                (
-                    [weight] => 3
-                    [position] => 22
-                )
-
-        )
-
-    [e] => Array
-        (
-            [details] => Array
-                (
-                    [weight] => 2
-                    [position] => 33
-                )
-
-        )
-
-    [f] => Array
-        (
-            [details] => Array
-                (
-                    [weight] => 1
-                    [position] => 34
-                )
-
-        )
-
-)
-*/
+$earray->getAverage(100);  // 140
 ```
 
 ## License

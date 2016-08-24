@@ -112,7 +112,7 @@ class EArrayTest extends \PHPUnit_Framework_TestCase
                 $status++;
             }
             if ($i == 4) {
-                $this->assertEquals("foo4", $k); 
+                $this->assertEquals("foo4", $k);
                 $this->assertEquals(array("foo5" => "foo6"), $v->toArray());
                 $status++;
             }
@@ -192,7 +192,7 @@ class EArrayTest extends \PHPUnit_Framework_TestCase
         $earray->set("aaa/bbb/ccc", "ValueOfCcc");
 
         $this->assertEquals(
-            array("aaa" => array("bbb" => array("ccc" => "ValueOfCcc"))), 
+            array("aaa" => array("bbb" => array("ccc" => "ValueOfCcc"))),
             $earray->toArray());
 
         // 2
@@ -202,7 +202,7 @@ class EArrayTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(
             array(
                 "ddd" => array("ddd" => 1),
-                "aaa" => array("bbb" => array("ccc" => "ValueOfCcc"))), 
+                "aaa" => array("bbb" => array("ccc" => "ValueOfCcc"))),
             $earray->toArray());
 
 
@@ -214,7 +214,7 @@ class EArrayTest extends \PHPUnit_Framework_TestCase
             array(
                 "aaa" => array(
                     "ddd" => 1,
-                    "bbb" => array("ccc" => "ValueOfCcc"))), 
+                    "bbb" => array("ccc" => "ValueOfCcc"))),
             $earray->toArray());
 
         // 4
@@ -231,7 +231,7 @@ class EArrayTest extends \PHPUnit_Framework_TestCase
             array(
                 "aaa" => array("ddd" => "fff"),
                 "aaa.bbb.ccc" => "ValueOfCcc",
-                ), 
+                ),
             $earray->toArray());
 
 
@@ -615,5 +615,25 @@ class EArrayTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(140, $earray->getAverageAndAdd(100));
         $this->assertEquals(90, $earray->getAverageAndAdd(50));
+    }
+
+    public function testDotDelemiter()
+    {
+        $earray = new EArray(
+            array(
+                "a" => array(
+                    "b" => array(
+                        "c" => array(
+                            "d" => array(
+                                "e" => "f",
+                            )
+                        ),
+                    ),
+                ),
+            )
+        , ".");
+
+        $earray2 = $earray->get("a.b");
+        $this->assertEquals("f", $earray2->get("c.d.e"));
     }
 }

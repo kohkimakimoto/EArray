@@ -47,9 +47,13 @@ class EArray implements \ArrayAccess, \Iterator, \Countable
      */
     public function get($key, $default = null, $delimiter = null)
     {
+        if ($delimiter === null) {
+            $delimiter = $this->delimiter;
+        }
+
         $ret = $this->getRawValue($key, $default, $delimiter);
         if (is_array($ret)) {
-            $ret = new EArray($ret);
+            $ret = new EArray($ret, $delimiter);
         }
 
         return $ret;
